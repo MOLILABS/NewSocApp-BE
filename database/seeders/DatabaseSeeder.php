@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             PlatformSeeder::class,
             TeamSeeder::class,
             RoleSeeder::class,
+            UserSeeder::class,
         ]);
         // Delete resource files after seeding
         $resourceFolder = storage_path("/resource");
