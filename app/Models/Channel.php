@@ -90,35 +90,25 @@ class Channel extends BaseModel
         return [$title, $logo];
     }
 
-//    /**
-//     * @throws GuzzleException
-//     * @throws InvalidSelectorException
-//     */
-//    protected function getAdditionalStoreFields(Request $request): array
-//    {
-//        $channel_id = $request['channel_id'];
-//        $platform_id = $request['platform_id'];
-//        $result = Platform::query()->find($platform_id)->first();
-//        $data = [];
-//        if ('tiktok' === $result->name){
-//            $data = $this->getTiktokInfo($channel_id);
-//        }
-//        if ('youtube' === $result->name){
-//            $data = $this->getYoutubeInfo($channel_id);
-//        }
-//        if ('facebook' === $result->name){
-//            $data = $this->getFacebookInfo($channel_id);
-//        }
-//        return ['logo' => $data[1], 'name' => $data[0] ];
-//    }
-
     /**
      * @throws GuzzleException
      * @throws InvalidSelectorException
      */
-    protected function getAdditionalStoreFields(): array
+    protected function getAdditionalStoreFields(Request $request): array
     {
-        $data = $this->getTiktokInfo('TapChiDanOng.Page');
+        $channel_id = $request['channel_id'];
+        $platform_id = $request['platform_id'];
+        $result = Platform::query()->find($platform_id)->first();
+        $data = [];
+        if ('tiktok' === $result->name){
+            $data = $this->getTiktokInfo($channel_id);
+        }
+        if ('youtube' === $result->name){
+            $data = $this->getYoutubeInfo($channel_id);
+        }
+        if ('facebook' === $result->name){
+            $data = $this->getFacebookInfo($channel_id);
+        }
         return ['logo' => $data[1], 'name' => $data[0] ];
     }
 
