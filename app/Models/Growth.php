@@ -7,5 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Growth extends BaseModel
 {
-    use HasFactory;
+    protected $updatable = [
+        'created_by' => 'string',
+        'updated_by' => 'string',
+        'is_active' => 'boolean',
+        'detail' => 'string',
+    ];
 }

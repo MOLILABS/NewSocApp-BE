@@ -15,7 +15,7 @@ class TeamSeeder extends Seeder
      */
     public function run()
     {
-        $platform = file(storage_path() . "/resource/platforms.txt", FILE_IGNORE_NEW_LINES);
+        $platform = file(storage_path() . "/resource/teams.txt", FILE_IGNORE_NEW_LINES);
         $platform = collect($platform)->map(function ($item) {
             $separate = explode(":", $item);
             return [

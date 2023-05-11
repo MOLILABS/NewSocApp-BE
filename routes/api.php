@@ -1,9 +1,14 @@
 <?php
 
 
+use App\Http\Controllers\CategoryChannelController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ChannelController;
+use App\Http\Controllers\ChannelGroupController;
+use App\Http\Controllers\ChannelUserController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\TeamController;
+use App\Http\Controllers\TeamUserController;
 use App\Http\Middleware\AuthStore;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -26,15 +31,15 @@ Route::post('auth/login', [AuthController::class, 'loginUser']);
 Route::middleware(['auth:sanctum', AuthStore::class])->group(function () {
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
-    Route::post('groups', [GroupController::class, 'store']);
-    Route::get('groups', [GroupController::class, 'index']);
-    Route::delete('groups/{id}', [GroupController::class, 'destroy']);
-    Route::post('categories', [CategoryController::class, 'store']);
-    Route::get('categories', [CategoryController::class, 'index']);
-    Route::delete('categories/{id}', [CategoryController::class, 'destroy']);
-    Route::post('teams', [TeamController::class, 'store']);
-    Route::get('teams', [TeamController::class, 'index']);
-    Route::delete('teams/{id}', [TeamController::class, 'destroy']);
+    Route::resource('groups', GroupController::class);
+    Route::resource('categories', CategoryController::class);
+    Route::resource('teams', TeamController::class);
+    Route::resource('channels', ChannelController::class);
+    Route::resource('category-channel', CategoryChannelController::class);
+    Route::resource('channel-group', ChannelGroupController::class);
+    Route::resource('channel-user', ChannelUserController::class);
+    Route::resource('team-user', TeamUserController::class);
     Route::post('permission/assign', [PermissionController::class, 'assignPermissionToRole']);
     Route::post('role/assign', [RoleController::class, 'assignRoleToUser']);
 });
+Route::get('test/tiktok', [ChannelController::class, 'getInfoTiktok']);

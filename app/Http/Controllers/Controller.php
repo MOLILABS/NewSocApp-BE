@@ -54,8 +54,8 @@ class Controller extends BaseController
     {
         // TODO: missing permission check
         $result = $this->currentQuery()
-            ->with($this->modelObj->showingRelations)
-            ->where($this->modelObj->queryBy, $id)
+            ->with($this->modelObj->showingRelations);
+        $result->where($this->modelObj->queryBy, $id)
             ->orWhere('id', $id)
             ->select($this->modelObj->getAliasString())
             ->first();

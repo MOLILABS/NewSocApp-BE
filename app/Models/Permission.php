@@ -12,6 +12,8 @@ class Permission extends BaseModel
 {
     use HasFactory;
 
+    public $active = true;
+
     protected $fillable = [
         'name'
     ];
