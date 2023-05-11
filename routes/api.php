@@ -42,4 +42,3 @@ Route::middleware(['auth:sanctum', AuthStore::class])->group(function () {
     Route::post('permission/assign', [PermissionController::class, 'assignPermissionToRole']);
     Route::post('role/assign', [RoleController::class, 'assignRoleToUser']);
 });
-Route::get('test/tiktok', [ChannelController::class, 'getInfoTiktok']);

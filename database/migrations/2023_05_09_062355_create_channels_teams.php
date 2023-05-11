@@ -1,13 +1,17 @@
 <?php
 
+use App\Common\CustomBlueprint;
 use App\Models\Category;
+use App\Models\CategoryChannel;
 use App\Models\Channel;
+use App\Models\ChannelGroup;
+use App\Models\ChannelUser;
 use App\Models\Group;
 use App\Models\Growth;
 use App\Models\Platform;
 use App\Models\Team;
+use App\Models\TeamUser;
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 class CreateChannelsTeams extends Migration
@@ -19,47 +23,27 @@ class CreateChannelsTeams extends Migration
      */
     public function up()
     {
-        Schema::create(Category::retrieveTableName(), function (Blueprint $table) {
-            $table->increments('id')->unique();
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent();
-            $table->boolean('is_active')->default(true);
-            $table->string('created_by')->default('');
-            $table->string('updated_by')->default('');
+        Schema::create(Category::retrieveTableName(), function (CustomBlueprint $table) {
+            $table->audit();
             $table->string('name');
             $table->string('description');
         });
 
-        Schema::create(Group::retrieveTableName(), function (Blueprint $table) {
-            $table->increments('id')->unique();
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent();
-            $table->boolean('is_active')->default(true);
-            $table->string('created_by')->default('');
-            $table->string('updated_by')->default('');
+        Schema::create(Group::retrieveTableName(), function (CustomBlueprint $table) {
+            $table->audit();
             $table->string('name');
             $table->string('description');
         });
 
-        Schema::create(Platform::retrieveTableName(), function (Blueprint $table) {
-            $table->increments('id')->unique();
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent();
-            $table->boolean('is_active')->default(true);
-            $table->string('created_by')->default('');
-            $table->string('updated_by')->default('');
+        Schema::create(Platform::retrieveTableName(), function (CustomBlueprint $table) {
+            $table->audit();
             $table->string('name');
             $table->string('description');
             $table->string('logo');
         });
 
-        Schema::create(Channel::retrieveTableName(), function (Blueprint $table) {
-            $table->increments('id')->unique();
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent();
-            $table->boolean('is_active')->default(true);
-            $table->string('created_by')->default('');
-            $table->string('updated_by')->default('');
+        Schema::create(Channel::retrieveTableName(), function (CustomBlueprint $table) {
+            $table->audit();
             $table->string('channel_id');
             $table->string('link')->nullable();
             $table->string('name');
@@ -69,58 +53,36 @@ class CreateChannelsTeams extends Migration
             $table->unique(['channel_id', 'platform_id']);
         });
 
-        Schema::create(Team::retrieveTableName(), function (Blueprint $table) {
-            $table->increments('id')->unique();
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent();
-            $table->boolean('is_active')->default(true);
-            $table->string('created_by')->default('');
-            $table->string('updated_by')->default('');
+        Schema::create(Team::retrieveTableName(), function (CustomBlueprint $table) {
+            $table->audit();
             $table->string('name');
             $table->string('description');
         });
 
-        Schema::create(Growth::retrieveTableName(), function (Blueprint $table) {
-            $table->increments('id')->unique();
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent();
-            $table->boolean('is_active')->default(true);
-            $table->string('created_by')->default('');
-            $table->string('updated_by')->default('');
+        Schema::create(Growth::retrieveTableName(), function (CustomBlueprint $table) {
+            $table->audit();
             $table->string('detail');
             $table->date('date');
         });
 
-        Schema::create('category_channel', function (Blueprint $table) {
-            $table->increments('id')->unique();
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent();
-            $table->string('created_by')->default('');
-            $table->string('updated_by')->default('');
+        Schema::create('category_channel', function (CustomBlueprint $table) {
+            $table->audit();
             $table->integer('category_id')->unsigned();
             $table->foreign('category_id')->references('id')->on(Category::retrieveTableName())->onDelete('cascade');
             $table->integer('channel_id')->unsigned();
             $table->foreign('channel_id')->references('id')->on(Channel::retrieveTableName())->onDelete('cascade');
         });
 
-        Schema::create('channel_group', function (Blueprint $table) {
-            $table->increments('id')->unique();
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent();
-            $table->string('created_by')->default('');
-            $table->string('updated_by')->default('');
+        Schema::create('channel_group', function (CustomBlueprint $table) {
+            $table->audit();
             $table->integer('group_id')->unsigned();
             $table->foreign('group_id')->references('id')->on(Group::retrieveTableName())->onDelete('cascade');
             $table->integer('channel_id')->unsigned();
             $table->foreign('channel_id')->references('id')->on(Channel::retrieveTableName())->onDelete('cascade');
         });
 
-        Schema::create('channel_user', function (Blueprint $table) {
-            $table->increments('id')->unique();
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent();
-            $table->string('created_by')->default('');
-            $table->string('updated_by')->default('');
+        Schema::create('channel_user', function (CustomBlueprint $table) {
+            $table->audit();
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('channel_id')->unsigned();
@@ -130,12 +92,8 @@ class CreateChannelsTeams extends Migration
             $table->unique(['channel_id', 'user_id']);
         });
 
-        Schema::create('team_user', function (Blueprint $table) {
-            $table->increments('id')->unique();
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent();
-            $table->string('created_by')->default('');
-            $table->string('updated_by')->default('');
+        Schema::create('team_user', function (CustomBlueprint $table) {
+            $table->audit();
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('team_id')->unsigned();
@@ -158,9 +116,9 @@ class CreateChannelsTeams extends Migration
         Schema::dropIfExists(Team::retrieveTableName());
         Schema::dropIfExists(Channel::retrieveTableName());
         Schema::dropIfExists(Growth::retrieveTableName());
-        Schema::dropIfExists('category_channel');
-        Schema::dropIfExists('channel_group');
-        Schema::dropIfExists('channel_user');
-        Schema::dropIfExists('team_user');
+        Schema::dropIfExists(CategoryChannel::retrieveTableName());
+        Schema::dropIfExists(ChannelGroup::retrieveTableName());
+        Schema::dropIfExists(ChannelUser::retrieveTableName());
+        Schema::dropIfExists(TeamUser::retrieveTableName());
     }
 }

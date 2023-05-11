@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 class ChannelGroup extends BaseModel
 {
+    protected $table = 'channel_group';
     protected $updatable = [
         'created_by' => 'string',
         'updated_by' => 'string',
