@@ -61,7 +61,7 @@ class CreateChannelsTeams extends Migration
             $table->string('created_by')->default('');
             $table->string('updated_by')->default('');
             $table->string('channel_id');
-            $table->string('link');
+            $table->string('link')->nullable();
             $table->string('name');
             $table->string('logo', '2000');
             $table->unsignedInteger('platform_id');

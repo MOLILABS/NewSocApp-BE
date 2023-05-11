@@ -98,7 +98,7 @@ class Channel extends BaseModel
     {
         $channel_id = $request['channel_id'];
         $platform_id = $request['platform_id'];
-        $result = Platform::query()->find($platform_id)->first();
+        $result = Platform::query()->where('id', $platform_id)->first();
         $data = [];
         if ('tiktok' === $result->name){
             $data = $this->getTiktokInfo($channel_id);
