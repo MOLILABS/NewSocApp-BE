@@ -91,6 +91,26 @@ class Channel extends BaseModel
     }
 
     /**
+     * @throws InvalidSelectorException
+     * @throws GuzzleException
+     */
+    public function getWebsiteInfo(string $id): array
+    {
+        $client = new Client();
+        $res = $client->get($id)->getBody()->getContents();
+        $document = new Document();
+        $document->loadHtml($res);
+        $title = $document->find('title')[0]->text();
+        $logo = '';
+        $script = $document->find('link:contains("pageID")')[0]->text();
+        if (preg_match('/pageID\"\:\"(.*?)\"/', $script, $match) == 1) {
+            $pageId = $match[1];
+            $logo = $this->getFacebookPicture($pageId);
+        }
+        return [$title, $logo];
+    }
+
+    /**
      * @throws GuzzleException
      * @throws InvalidSelectorException
      */
@@ -108,6 +128,9 @@ class Channel extends BaseModel
         }
         if ('facebook' === $result->name){
             $data = $this->getFacebookInfo($channel_id);
+        }
+        if ('website' === $result->name){
+            $data = $this->getWebsiteInfo($channel_id);
         }
         return ['logo' => $data[1], 'name' => $data[0] ];
     }
