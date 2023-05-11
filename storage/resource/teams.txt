@@ -1,0 +1,9 @@
+facebook video:description
+facebook community:description
+youtube:description
+tiktok:description
+product:description
+sale:description
+BongDaSky:description
+MoliStar:description
+KOL:description
