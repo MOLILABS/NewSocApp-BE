@@ -94,20 +94,24 @@ class Channel extends BaseModel
      * @throws InvalidSelectorException
      * @throws GuzzleException
      */
-    public function getWebsiteInfo(string $id): array
+    public function getWebsiteInfo(string $url): array
     {
+
+        if (substr($url, -1) === '/') {
+            $url = substr($url, 0, -1);
+        }
         $client = new Client();
-        $res = $client->get($id)->getBody()->getContents();
+        $res = $client->get($url)->getBody()->getContents();
         $document = new Document();
         $document->loadHtml($res);
         $title = $document->find('title')[0]->text();
-        $logo = '';
-        $script = $document->find('link:contains("pageID")')[0]->text();
-        if (preg_match('/pageID\"\:\"(.*?)\"/', $script, $match) == 1) {
-            $pageId = $match[1];
-            $logo = $this->getFacebookPicture($pageId);
+        $faviconLink = $document->first('link[rel="icon"], link[rel="shortcut icon"]');
+        if ($faviconLink) {
+            $faviconLink = $faviconLink->getAttribute('href');
+            if (!strstr($faviconLink, 'http'))
+                $faviconLink = 'https://facebook.com'.$faviconLink;
         }
-        return [$title, $logo];
+        return [$title, $faviconLink];
     }
 
     /**
