@@ -1,5 +1,6 @@
 <?php
 
+use App\Common\Constant;
 use App\Common\CustomBlueprint;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\Schema;
@@ -13,14 +14,16 @@ class CreatePersonalAccessTokensTable extends Migration
      */
     public function up()
     {
-        Schema::create('personal_access_tokens', function (CustomBlueprint $table) {
+        Schema::create('personal_access_tokens', function (\Illuminate\Database\Schema\Blueprint $table) {
             $table->id();
             $table->morphs('tokenable');
             $table->string('name');
             $table->string('token', 64)->unique();
             $table->text('abilities')->nullable();
             $table->timestamp('last_used_at')->nullable();
-            $table->timestampsDf();
+//            $table->timestampsDf()
+            $table->timestamp(Constant::CREATED_AT)->useCurrent();
+            $table->timestamp(Constant::UPDATED_AT)->useCurrent();
         });
     }
 

@@ -21,7 +21,7 @@ class Channel extends BaseModel
 
         $response = $client->request('GET', 'https://tiktok28.p.rapidapi.com/profile/' . $id . '?schemaType=1', [
             'headers' => [
-                'X-RapidAPI-Key' => Constant::X_RapidAPI_Key,
+                'X-RapidAPI-Key' => env("X_RAPIDAPI_KEY"),
                 'X-RapidAPI-Host' => Constant::Tiktok_X_RapidAPI_Host
             ],
         ]);
@@ -43,7 +43,7 @@ class Channel extends BaseModel
             $response = $client->request('GET', 'https://youtube-v2.p.rapidapi.com/channel/details?channel_id='. $id, [
                 'headers' => [
                     'X-RapidAPI-Host' => Constant::Youtube_X_RapidAPI_Host,
-                    'X-RapidAPI-Key' => Constant::X_RapidAPI_Key,
+                    'X-RapidAPI-Key' => env("X_RAPIDAPI_KEY"),
                 ],
             ]);
 
