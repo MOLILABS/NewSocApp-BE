@@ -1,5 +1,6 @@
 <?php
 
+use App\Common\Constant;
 use App\Models\AbsenceRequest;
 use App\Models\AbsenceType;
 use Illuminate\Database\Migrations\Migration;
@@ -25,6 +26,8 @@ class CreateAbsenceRequestsTable extends Migration
             $table->enum('status', $status)->default($status[0]);
             $table->foreign('absence_type_id')->references('id')->on(AbsenceType::retrieveTableName());
             $table->foreign('user_id')->references('id')->on('users');
+            $table->dateTime('last_sent')->nullable();
+            $table->string('otp',Constant::OTP_LENGTH)->nullable();
 
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();

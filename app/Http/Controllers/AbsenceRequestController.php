@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Mail\Mail;
+use Carbon\Carbon;
 use App\Common\Helper;
+use App\Common\Constant;
+use Illuminate\Support\Str;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use App\Common\GlobalVariable;
@@ -20,14 +23,20 @@ class AbsenceRequestController extends Controller
         $user = $global->currentUser;
         $htmlFilePath = base_path() . '\resources/html/absence_request.php';
 
+        $absence_type_id = $request->get('absence_type_id');
+        $date = $request->get('date');
+        $reason = $request->get('reason');
+
         try {
             $request_id = DB::table(AbsenceRequest::retrieveTableName())
                 ->insertGetId([
-                    'date' => $request->get('date'),
-                    'absence_type_id' => $request->get('absence_type_id'),
-                    'reason' => $request->get('reason'),
+                    'date' => $date,
+                    'absence_type_id' => $absence_type_id,
+                    'reason' => $reason,
                     'user_id' => $user->id,
                     'status' => AbsenceRequest::REQUEST_STATUS[0],
+                    'last_sent' => Carbon::now(),
+                    'otp' => Str::random(Constant::OTP_LENGTH),
                     'created_by' => $user->id,
                     'updated_by' => $user->id
                 ]);
@@ -35,12 +44,13 @@ class AbsenceRequestController extends Controller
             $htmlContent = file_get_contents($htmlFilePath);
             $acceptLink = env('FE_URL') . 'absence-request/1/answer' . '?absenceid=' . $request_id . '&otp=' . $user->otp . '&accept=true';
             $denyLink = env('FE_URL') . 'absence-request/1/answer' . '?absenceid=' . $request_id . '&otp=' . $user->otp . '&accept=false';
+            
             $htmlContent = str_replace('{{linkAccept}}', $acceptLink, $htmlContent);
             $htmlContent = str_replace('{{linkDeny}}', $denyLink, $htmlContent);
 
             $htmlContent = str_replace('{{name}}', $user->name, $htmlContent);
-            $htmlContent = str_replace('{{date}}', $request->get('date'), $htmlContent);
-            $htmlContent = str_replace('{{reason}}', $request->get('reason'), $htmlContent);
+            $htmlContent = str_replace('{{date}}', $date, $htmlContent);
+            $htmlContent = str_replace('{{reason}}', $reason, $htmlContent);
 
             Mail::sendMail($user->email, "Xin nghỉ phép", $htmlContent);
 
@@ -48,5 +58,11 @@ class AbsenceRequestController extends Controller
         } catch (\Exception $ex) {
             return Helper::handleApiError($ex);
         }
+    }
+
+    public function answerRequest(Request $request)
+    {
+        $modelObj = $this->modelObj;
+        return $modelObj->confirm($request);
     }
 }
