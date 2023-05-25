@@ -40,10 +40,14 @@ class AbsenceRequestController extends Controller
                     'created_by' => $user->id,
                     'updated_by' => $user->id
                 ]);
+            
+            $otp = DB::table(AbsenceRequest::retrieveTableName())
+                    ->where('id','=',$request_id)
+                    ->first();
 
             $htmlContent = file_get_contents($htmlFilePath);
-            $acceptLink = env('FE_URL') . 'absence-request/1/answer' . '?absenceid=' . $request_id . '&otp=' . $user->otp . '&accept=true';
-            $denyLink = env('FE_URL') . 'absence-request/1/answer' . '?absenceid=' . $request_id . '&otp=' . $user->otp . '&accept=false';
+            $acceptLink = env('FE_URL') . 'absence-request/1/answer' . '?absenceid=' . $request_id . '&otp=' . $otp->otp . '&accept=true';
+            $denyLink = env('FE_URL') . 'absence-request/1/answer' . '?absenceid=' . $request_id . '&otp=' . $otp->otp . '&accept=false';
             
             $htmlContent = str_replace('{{linkAccept}}', $acceptLink, $htmlContent);
             $htmlContent = str_replace('{{linkDeny}}', $denyLink, $htmlContent);
