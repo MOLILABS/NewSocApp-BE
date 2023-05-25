@@ -11,6 +11,7 @@ class PermissionController extends Controller
 
     public function assignPermissionToRole(Request $request)
     {
+        /** @var Permission $modelObj */
         $modelObj = $this->modelObj;
         return $modelObj->assignPermissionToRole($request);
     }
