@@ -16,6 +16,11 @@ use Illuminate\Http\Request;
 class AbsenceRequestController extends Controller
 {
     public $model = AbsenceRequest::class;
+
+    /**
+     * @param Request $request
+     * @return Response
+     */
     public function handleStore(Request $request): Response
     {
         $global = app(GlobalVariable::class);
@@ -42,7 +47,7 @@ class AbsenceRequestController extends Controller
             
             $otp = DB::table(AbsenceRequest::retrieveTableName())
                     ->where('id','=',$request_id)
-                    ->first();
+                    ->first('otp');
 
             $htmlContent = file_get_contents($htmlFilePath);
             $acceptLink = env('FE_URL') . 'absence-request/1/answer' . '?absenceid=' . $request_id . '&otp=' . $otp->otp . '&accept=true';

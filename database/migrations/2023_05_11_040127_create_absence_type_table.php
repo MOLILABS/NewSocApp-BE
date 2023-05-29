@@ -3,6 +3,7 @@
 use App\Models\AbsenceType;
 use App\Common\CustomSchema;
 use App\Common\CustomBlueprint;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -36,7 +37,7 @@ class CreateAbsenceTypeTable extends Migration
             $table->unsignedInteger('user_id')->nullable(false);
             $table->date('date');
             $table->unsignedInteger('absence_type_id')->nullable(false);
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on(User::TABLE_NAME);
             $table->foreign('absence_type_id')->references('id')->on(AbsenceType::retrieveTableName());
 
             $table->audit();

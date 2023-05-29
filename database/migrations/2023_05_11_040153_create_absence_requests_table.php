@@ -8,6 +8,7 @@ use App\Common\CustomBlueprint;
 use App\Models\AbsenceType;
 use App\Common\CustomSchema;
 use App\Models\AbsenceRequest;
+use App\Models\User;
 use Illuminate\Support\Facades\Schema;
 
 
@@ -29,7 +30,7 @@ class CreateAbsenceRequestsTable extends Migration
             $table->unsignedInteger('user_id')->nullable(false);
             $table->enum('status', $status)->default($status[0]);
             $table->foreign('absence_type_id')->references('id')->on(AbsenceType::retrieveTableName());
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on(User::TABLE_NAME);
             $table->dateTime('last_sent')->nullable();
             $table->string('otp',Constant::OTP_LENGTH)->nullable();
 
