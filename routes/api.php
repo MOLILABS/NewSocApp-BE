@@ -5,6 +5,7 @@ use App\Http\Controllers\AbsenceRequestController;
 use App\Http\Middleware\AuthStore;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\GrowthController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -34,4 +35,6 @@ Route::middleware(['auth:sanctum', AuthStore::class])->group(function () {
     
     Route::resource('absence-types', AbsenceController::class);
     Route::resource('absence-request', AbsenceRequestController::class);
+
+    Route::resource('channel/growth', GrowthController::class);
 });
