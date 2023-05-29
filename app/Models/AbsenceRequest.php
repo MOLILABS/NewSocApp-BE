@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+
 use App\Mail\Mail;
 use App\Common\Helper;
 use App\Common\Constant;
@@ -9,8 +10,8 @@ use App\Models\BaseModel;
 use Illuminate\Support\Str;
 use App\Common\GlobalVariable;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\Request;

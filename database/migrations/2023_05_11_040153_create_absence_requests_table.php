@@ -1,11 +1,15 @@
 <?php
 
+
 use App\Common\Constant;
-use App\Models\AbsenceRequest;
-use App\Models\AbsenceType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use App\Common\CustomBlueprint;
+use App\Models\AbsenceType;
+use App\Common\CustomSchema;
+use App\Models\AbsenceRequest;
 use Illuminate\Support\Facades\Schema;
+
 
 class CreateAbsenceRequestsTable extends Migration
 {
@@ -16,9 +20,9 @@ class CreateAbsenceRequestsTable extends Migration
      */
     public function up()
     {
-        Schema::create(AbsenceRequest::retrieveTableName(), function (Blueprint $table) {
+
+        CustomSchema::create(AbsenceRequest::retrieveTableName(), function (CustomBlueprint $table) {
             $status = AbsenceRequest::REQUEST_STATUS;
-            $table->id();
             $table->timestamp('date')->useCurrent();
             $table->unsignedInteger('absence_type_id')->nullable(false);
             $table->string('reason');
@@ -29,11 +33,8 @@ class CreateAbsenceRequestsTable extends Migration
             $table->dateTime('last_sent')->nullable();
             $table->string('otp',Constant::OTP_LENGTH)->nullable();
 
-            $table->string('created_by')->nullable();
-            $table->string('updated_by')->nullable();
-            $table->boolean('is_active')->default(true);
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent();
+
+            $table->audit();
         });
     }
 
@@ -44,6 +45,6 @@ class CreateAbsenceRequestsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists(AbsenceRequest::retrieveTableName());
+        CustomSchema::dropIfExists(AbsenceRequest::retrieveTableName());
     }
 }

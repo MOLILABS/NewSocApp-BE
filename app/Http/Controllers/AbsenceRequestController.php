@@ -16,7 +16,6 @@ use Illuminate\Http\Request;
 class AbsenceRequestController extends Controller
 {
     public $model = AbsenceRequest::class;
-
     public function handleStore(Request $request): Response
     {
         $global = app(GlobalVariable::class);

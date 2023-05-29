@@ -11,9 +11,10 @@ class UserController extends Controller
 {
     public $model = User::class;
 
-    public function updateSalary(Request $request)
+    public function updateSalary(Request $request, $id)
     {
+        /** @var User $modelObj */
         $modelObj = $this->modelObj;
-        return $modelObj->updateSalary($request);
+        return $modelObj->updateSalary($request, $id);
     }
 }

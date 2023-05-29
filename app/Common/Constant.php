@@ -15,6 +15,8 @@ class Constant
         'hr@molinetwork.com',
         'vu.tran@molinetwork.com'
     ];
+    const ALREADY_VERIFIED_EMAIL = [003, 'Already verified email'];
+
     // Common fields
     const CREATED_BY = 'created_by';
     const UPDATED_BY = 'updated_by';
