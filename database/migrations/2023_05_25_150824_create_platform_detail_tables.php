@@ -59,8 +59,6 @@ class CreatePlatformDetailTables extends Migration
      */
     public function down()
     {
-        CustomSchema::dropIfExists(Platform::retrieveTableName());
-        CustomSchema::dropIfExists(Channel::retrieveTableName());
         CustomSchema::dropIfExists(FacebookDetail::retrieveTableName());
         CustomSchema::dropIfExists(YoutubeDetail::retrieveTableName());
         CustomSchema::dropIfExists(TiktokDetail::retrieveTableName());
