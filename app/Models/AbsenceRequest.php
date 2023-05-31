@@ -22,7 +22,8 @@ class AbsenceRequest extends BaseModel
 
     protected $fillable = [
         'reason',
-        'absence_type_id'
+        'absence_type_id',
+        'date'
     ];
 
     protected $updatable = [
@@ -47,6 +48,10 @@ class AbsenceRequest extends BaseModel
                 'absence_type_id' => [
                     'required',
                     'integer'
+                ],
+                'date' => [
+                    'required',
+                    'date'
                 ]
             ],
             parent::getStoreValidator($request)
@@ -87,16 +92,18 @@ class AbsenceRequest extends BaseModel
     public function confirm(Request $request)
     {
         $htmlFilePath = base_path() . '\resources/html/answer_request.php';
+        $htmlContent = file_get_contents($htmlFilePath);
+
         $validate = Validator::make(
             $request->all(),
             [
-                'absenceid' => 'required',
-                'accept' => 'required',
+                'request_id' => 'required',
+                'action' => 'required',
                 'otp' => 'required',
                 'note' => 'string'
             ]
         );
-        $absence_id = $request->get('absenceid');
+        $request_id = $request->get('request_id');
 
         if ($validate->fails()) {
             return Helper::getResponse(null, $validate->errors());
@@ -104,7 +111,7 @@ class AbsenceRequest extends BaseModel
 
         try {
             $requestID = DB::table(AbsenceRequest::retrieveTableName())
-                ->where('id', '=', $absence_id)
+                ->where('id', '=', $request_id)
                 ->first();
 
             $user = DB::table('users')
@@ -113,26 +120,30 @@ class AbsenceRequest extends BaseModel
 
             if ($request->get('otp') == $requestID->otp) {
                 // Check if the OTP is correct
-                if ($request->get('accept') == true) {
+                if ($request->get('action') === 'accept') {
                     DB::table(AbsenceRequest::retrieveTableName())
-                        ->where('id', '=', $absence_id)
+                        ->where('id', '=', $request_id)
                         ->update(
                             [
                                 'status' => AbsenceRequest::REQUEST_STATUS[1]
                             ]
                         );
-                } else if ($request->get('accept') == false) {
+
+                    $htmlContent = str_replace('{{response}}', "Đơn xin đã được chấp thuận", $htmlContent);
+                } else if ($request->get('action') === 'deny') {
                     DB::table(AbsenceRequest::retrieveTableName())
-                        ->where('id', '=', $absence_id)
+                        ->where('id', '=', $request_id)
                         ->update(
                             [
                                 'status' => AbsenceRequest::REQUEST_STATUS[2]
                             ]
                         );
+
+                    $htmlContent = str_replace('{{response}}', "Đơn xin đã bị từ chối", $htmlContent);
                 }
             } else {
                 DB::table(AbsenceRequest::retrieveTableName())
-                    ->where('id', '=', $absence_id)
+                    ->where('id', '=', $request_id)
                     ->update(
                         [
                             'otp' => Str::random(Constant::OTP_LENGTH)
@@ -144,12 +155,10 @@ class AbsenceRequest extends BaseModel
                 ]);
             }
 
-
-            $htmlContent = file_get_contents($htmlFilePath);
             if ($request->get('note')) {
                 $htmlContent = str_replace('{{note}}', $request->get('note'), $htmlContent);
             }
-
+            
             Mail::sendMail($user->email, "Mail phản hồi nghỉ phép", $htmlContent);
 
             return Helper::getResponse('Answer sucess');

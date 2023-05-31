@@ -137,6 +137,7 @@
                                         <p class="text-build-content"
                                            style="text-align: center; margin: 10px 0; margin-top: 10px;"
                                            data-testid="kNBhwDZBzk1oLdNNMmIcP"><span style="font-family:Arial;">
+                                           {{response}} <br><br>
                                            {{note}}
                                         </span>
                                         </p>

@@ -50,8 +50,8 @@ class AbsenceRequestController extends Controller
                     ->first('otp');
 
             $htmlContent = file_get_contents($htmlFilePath);
-            $acceptLink = env('FE_URL') . 'absence-request/1/answer' . '?absenceid=' . $request_id . '&otp=' . $otp->otp . '&accept=true';
-            $denyLink = env('FE_URL') . 'absence-request/1/answer' . '?absenceid=' . $request_id . '&otp=' . $otp->otp . '&accept=false';
+            $acceptLink = env('FE_URL') . '/answer' . '?request_id=' . $request_id . '&otp=' . $otp->otp . '&action=accept';
+            $denyLink = env('FE_URL') . '/answer' . '?request_id=' . $request_id . '&otp=' . $otp->otp . '&action=deny';
             
             $htmlContent = str_replace('{{linkAccept}}', $acceptLink, $htmlContent);
             $htmlContent = str_replace('{{linkDeny}}', $denyLink, $htmlContent);
