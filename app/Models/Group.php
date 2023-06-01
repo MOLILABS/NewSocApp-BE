@@ -13,12 +13,4 @@ class Group extends BaseModel
         'name',
         'description'
     ];
-
-    protected $updatable = [
-        'name' => 'string',
-        'description' => 'string',
-        'created_by' => 'string',
-        'updated_by' => 'string',
-        'is_active' => 'boolean'
-    ];
 }

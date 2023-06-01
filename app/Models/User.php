@@ -2,10 +2,19 @@
 
 namespace App\Models;
 
+use App\Common\Helper;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Spatie\Permission\Traits\HasRoles;
-use Spatie\Permission\Traits\HasPermissions;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Traits\HasPermissions;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -36,6 +45,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'otp',
+        'last_sent',
+        'confirm_email'
     ];
 
     /**
@@ -68,19 +80,61 @@ class User extends Authenticatable
     ];
 
     const ROLES = [
-        "admin" => [
-            self::ABILITIES[0],
-            self::ABILITIES[1],
-            self::ABILITIES[2],
-            self::ABILITIES[3],
-            self::ABILITIES[4],
-            self::ABILITIES[5],
-            self::ABILITIES[6],
-        ],
+        "admin" => self::ABILITIES,
         "leader" => [],
         "accountant" => [],
         "hr" => [],
         "finance" => [],
         "guest" => []
     ];
+
+    /**
+     * @return HasMany
+     */
+    public function absenceRequests(): HasMany
+    {
+        return $this->hasMany(AbsenceRequest::class);
+    }
+
+    /**
+     * @param $request, $id
+     * @return Application|ResponseFactory|Response
+     */
+    public function updateSalary(Request $request, $id)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'user_id' => [
+                    'required',
+                    'integer'
+                ],
+                'salary' => [
+                    'required',
+                    'integer'
+                ]
+            ]
+        );
+
+        if ($validator->fails()) {
+            return Helper::getResponse('', $validator->errors());
+        }
+
+        $salary = $request->get('salary');
+        try {
+            if (Gate::allows('updateSalary')) {
+                DB::table('users')
+                    ->where('id', '=', $id)
+                    ->update([
+                        'salary' => $salary
+                    ]);
+
+                return Helper::getResponse(true);
+            } else {
+                return Helper::getResponse(null, 'Unauthorized', 401);
+            }
+        } catch (\Exception $ex) {
+            return Helper::handleApiError($ex);
+        }
+    }
 }

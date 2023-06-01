@@ -4,7 +4,6 @@ use App\Common\CustomBlueprint;
 use App\Models\Category;
 use App\Models\CategoryChannel;
 use App\Models\Channel;
-use App\Models\ChannelGroup;
 use App\Models\ChannelUser;
 use App\Models\Group;
 use App\Models\Growth;
@@ -13,6 +12,7 @@ use App\Models\Team;
 use App\Models\TeamUser;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\Schema;
+use App\Common\CustomSchema;
 
 class CreateChannelsTeams extends Migration
 {
@@ -23,49 +23,49 @@ class CreateChannelsTeams extends Migration
      */
     public function up()
     {
-        Schema::create(Category::retrieveTableName(), function (CustomBlueprint $table) {
+        CustomSchema::create(Category::retrieveTableName(), function (CustomBlueprint $table) {
             $table->audit();
-            $table->string('name');
-            $table->string('description');
+            $table->char('name');
+            $table->char('description');
         });
 
-        Schema::create(Group::retrieveTableName(), function (CustomBlueprint $table) {
+        CustomSchema::create(Group::retrieveTableName(), function (CustomBlueprint $table) {
             $table->audit();
-            $table->string('name');
-            $table->string('description');
+            $table->char('name');
+            $table->char('description');
         });
 
-        Schema::create(Platform::retrieveTableName(), function (CustomBlueprint $table) {
+        CustomSchema::create(Platform::retrieveTableName(), function (CustomBlueprint $table) {
             $table->audit();
             $table->string('name');
             $table->string('description');
             $table->string('logo');
         });
 
-        Schema::create(Channel::retrieveTableName(), function (CustomBlueprint $table) {
+        CustomSchema::create(Channel::retrieveTableName(), function (CustomBlueprint $table) {
             $table->audit();
-            $table->string('channel_id');
-            $table->string('link')->nullable();
-            $table->string('name');
+            $table->char('channel_id');
+            $table->char('link')->nullable();
+            $table->char('name');
             $table->string('logo', '2000');
             $table->unsignedInteger('platform_id');
             $table->foreign('platform_id')->references('id')->on(Platform::retrieveTableName());
             $table->unique(['channel_id', 'platform_id']);
         });
 
-        Schema::create(Team::retrieveTableName(), function (CustomBlueprint $table) {
+        CustomSchema::create(Team::retrieveTableName(), function (CustomBlueprint $table) {
             $table->audit();
-            $table->string('name');
-            $table->string('description');
+            $table->char('name');
+            $table->char('description');
         });
 
-        Schema::create(Growth::retrieveTableName(), function (CustomBlueprint $table) {
+        CustomSchema::create(Growth::retrieveTableName(), function (CustomBlueprint $table) {
             $table->audit();
-            $table->string('detail');
+            $table->char('detail');
             $table->date('date');
         });
 
-        Schema::create('category_channel', function (CustomBlueprint $table) {
+        CustomSchema::create(CategoryChannel::retrieveTableName(), function (CustomBlueprint $table) {
             $table->audit();
             $table->integer('category_id')->unsigned();
             $table->foreign('category_id')->references('id')->on(Category::retrieveTableName())->onDelete('cascade');
@@ -73,15 +73,7 @@ class CreateChannelsTeams extends Migration
             $table->foreign('channel_id')->references('id')->on(Channel::retrieveTableName())->onDelete('cascade');
         });
 
-        Schema::create('channel_group', function (CustomBlueprint $table) {
-            $table->audit();
-            $table->integer('group_id')->unsigned();
-            $table->foreign('group_id')->references('id')->on(Group::retrieveTableName())->onDelete('cascade');
-            $table->integer('channel_id')->unsigned();
-            $table->foreign('channel_id')->references('id')->on(Channel::retrieveTableName())->onDelete('cascade');
-        });
-
-        Schema::create('channel_user', function (CustomBlueprint $table) {
+        CustomSchema::create(ChannelUser::retrieveTableName(), function (CustomBlueprint $table) {
             $table->audit();
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
@@ -92,7 +84,7 @@ class CreateChannelsTeams extends Migration
             $table->unique(['channel_id', 'user_id']);
         });
 
-        Schema::create('team_user', function (CustomBlueprint $table) {
+        CustomSchema::create(TeamUser::retrieveTableName(), function (CustomBlueprint $table) {
             $table->audit();
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
@@ -110,15 +102,14 @@ class CreateChannelsTeams extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists(Category::retrieveTableName());
-        Schema::dropIfExists(Group::retrieveTableName());
-        Schema::dropIfExists(Platform::retrieveTableName());
-        Schema::dropIfExists(Team::retrieveTableName());
-        Schema::dropIfExists(Channel::retrieveTableName());
-        Schema::dropIfExists(Growth::retrieveTableName());
-        Schema::dropIfExists(CategoryChannel::retrieveTableName());
-        Schema::dropIfExists(ChannelGroup::retrieveTableName());
-        Schema::dropIfExists(ChannelUser::retrieveTableName());
-        Schema::dropIfExists(TeamUser::retrieveTableName());
+        CustomSchema::dropIfExists(Category::retrieveTableName());
+        CustomSchema::dropIfExists(Group::retrieveTableName());
+        CustomSchema::dropIfExists(Platform::retrieveTableName());
+        CustomSchema::dropIfExists(Team::retrieveTableName());
+        CustomSchema::dropIfExists(Channel::retrieveTableName());
+        CustomSchema::dropIfExists(Growth::retrieveTableName());
+        CustomSchema::dropIfExists(CategoryChannel::retrieveTableName());
+        CustomSchema::dropIfExists(ChannelUser::retrieveTableName());
+        CustomSchema::dropIfExists(TeamUser::retrieveTableName());
     }
 }

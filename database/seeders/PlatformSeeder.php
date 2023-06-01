@@ -15,16 +15,14 @@ class PlatformSeeder extends Seeder
      */
     public function run()
     {
-        $platform = file(storage_path() . "/resource/platforms.txt", FILE_IGNORE_NEW_LINES);
-        $platform = collect($platform)->map(function ($item) {
-            $separate = explode(":", $item);
-            return [
-                'name' => $separate[0],
-                'description' => $separate[1],
-                'logo' => $separate[2]
-            ];
-        })->toArray();
-        DB::table(Platform::retrieveTableName())
-            ->insert($platform);
+        $types = Platform::PLATFORM_TYPES;
+        foreach ($types as $key => $value) {
+            DB::table(Platform::retrieveTableName())
+                ->insert([
+                    'name' => $value['name'],
+                    'description' => $value['description'],
+                    'logo' => $value['logo']
+                ]);
+        };
     }
 }

@@ -10,11 +10,6 @@ use Illuminate\Http\Response;
 class TeamUser extends BaseModel
 {
     protected $table = 'team_user';
-    protected $updatable = [
-        'created_by' => 'string',
-        'updated_by' => 'string',
-        'is_active' => 'boolean'
-    ];
 
     static function getStoreValidator(Request $request): array
     {

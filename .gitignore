@@ -27,3 +27,5 @@ docker-compose.override.yml
 .*
 !/.gitignore
 !/public/.htaccess
+
+resources

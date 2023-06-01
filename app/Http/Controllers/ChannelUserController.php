@@ -15,6 +15,7 @@ class ChannelUserController extends Controller
 
     public function handleStore(Request $request): Response
     {
+        #TODO: waiting for permission
         try {
             $user_id = $request['user_id'];
             $team_id = $request['team_id'];

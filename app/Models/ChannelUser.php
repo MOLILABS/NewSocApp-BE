@@ -8,9 +8,6 @@ class ChannelUser extends BaseModel
 {
     protected $table = 'channel_user';
     protected $updatable = [
-        'created_by' => 'string',
-        'updated_by' => 'string',
-        'is_active' => 'boolean',
         'is_supporter' => 'boolean',
         'is_responsible' => 'boolean',
     ];

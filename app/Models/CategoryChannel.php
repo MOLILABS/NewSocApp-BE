@@ -7,11 +7,6 @@ use Illuminate\Http\Request;
 class CategoryChannel extends BaseModel
 {
     protected $table = 'category_channel';
-    protected $updatable = [
-        'created_by' => 'string',
-        'updated_by' => 'string',
-        'is_active' => 'boolean',
-    ];
 
     static function getStoreValidator(Request $request): array
     {
