@@ -1,0 +1,17 @@
+name: cicd-socapp-be
+on: [push]
+jobs:
+
+  deploy-main:
+    if: github.ref == 'refs/heads/main'
+    runs-on: molilabs
+    steps:
+    - uses: actions/checkout@v2
+    - name: 'Deploy main'
+      run: |
+          rsync -av --exclude=.git ./ /data/vhosts/socapp_be/.
+          cd /data/vhosts/socapp_be
+          chown -R www-data:www-data /data/vhosts/socapp_be
+          docker exec -i socapp_be_api composer install
+#          docker exec -i socapp_be_api php artisan key:generate
+#          docker exec -i socapp_be_api php artisan config:cache
