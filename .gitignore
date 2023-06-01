@@ -24,6 +24,5 @@ storage/logs
 docker-compose.override.yml
 
 # Everyfile with .
-.*
 !/.gitignore
 !/public/.htaccess
