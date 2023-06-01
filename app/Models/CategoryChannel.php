@@ -25,4 +25,29 @@ class CategoryChannel extends BaseModel
             parent::getStoreValidator($request)
         );
     }
+
+    protected $fillable = [
+        'name',
+        'description'
+    ];
+
+    protected $updatable = [
+        'name' => 'string',
+        'description' => 'string',
+    ];
+
+    static function getUpdateValidator(Request $request, string $id): array
+    {
+        return array_merge(
+            [
+                'description' => [
+                    'string'
+                ],
+                'name' => [
+                    'string'
+                ]
+            ],
+            parent::getStoreValidator($request)
+        );
+    }
 }

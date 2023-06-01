@@ -13,8 +13,6 @@ class Platform extends BaseModel
         'name',
         'description',
         'logo',
-        'created_by',
-        'updated_by'
     ];
 
     const PLATFORM_TYPES = [
