@@ -60,6 +60,7 @@ class AbsenceRequestController extends Controller
             $htmlContent = str_replace('{{date}}', $date, $htmlContent);
             $htmlContent = str_replace('{{reason}}', $reason, $htmlContent);
 
+            // should be send to team leader mail
             Mail::sendMail($user->email, "Xin nghỉ phép", $htmlContent);
 
             return Helper::getResponse(true);

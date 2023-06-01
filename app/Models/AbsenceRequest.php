@@ -114,7 +114,7 @@ class AbsenceRequest extends BaseModel
                 ->where('id', '=', $request_id)
                 ->first();
 
-            $user = DB::table('users')
+            $user = DB::table(User::TABLE_NAME)
                 ->where('id', '=', $requestID->user_id)
                 ->first();
 
@@ -159,6 +159,7 @@ class AbsenceRequest extends BaseModel
                 $htmlContent = str_replace('{{note}}', $request->get('note'), $htmlContent);
             }
             
+            // should be send to team leader mail
             Mail::sendMail($user->email, "Mail phản hồi nghỉ phép", $htmlContent);
 
             return Helper::getResponse('Answer sucess');

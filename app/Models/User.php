@@ -120,7 +120,7 @@ class User extends Authenticatable
         $salary = $request->get('salary');
         try {
             if (Gate::allows('updateSalary')) {
-                DB::table('users')
+                DB::table(User::TABLE_NAME)
                     ->where('id', '=', $id)
                     ->update([
                         'salary' => $salary
