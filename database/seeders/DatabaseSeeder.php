@@ -15,10 +15,10 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             PermissionSeeder::class,
-            UserSeeder::class,
             PlatformSeeder::class,
             TeamSeeder::class,
             RoleSeeder::class,
+            AbsenceTypeSeeder::class,
             UserSeeder::class,
         ]);
         // Delete resource files after seeding

@@ -15,8 +15,6 @@ class Permission extends BaseModel
 {
     use HasFactory;
 
-    public $active = true;
-
     protected $fillable = [
         'name',
         'description'
@@ -29,7 +27,7 @@ class Permission extends BaseModel
 
     protected $guard = 'web';
 
-    static function getInsertValidator(Request $request): array
+    static function getStoreValidator(Request $request): array
     {
         return array_merge(
             [
@@ -41,7 +39,7 @@ class Permission extends BaseModel
                     'string'
                 ]
             ],
-            parent::getInsertValidator($request)
+            parent::getStoreValidator($request)
         );
     }
 

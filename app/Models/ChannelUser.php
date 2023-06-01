@@ -2,15 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Http\Request;
 
 class ChannelUser extends BaseModel
 {
+    use HasFactory;
+
     protected $table = 'channel_user';
     protected $updatable = [
-        'created_by' => 'string',
-        'updated_by' => 'string',
-        'is_active' => 'boolean',
         'is_supporter' => 'boolean',
         'is_responsible' => 'boolean',
     ];

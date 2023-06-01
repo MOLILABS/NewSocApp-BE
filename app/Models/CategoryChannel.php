@@ -2,16 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Http\Request;
 
 class CategoryChannel extends BaseModel
 {
+    use HasFactory;
+
     protected $table = 'category_channel';
-    protected $updatable = [
-        'created_by' => 'string',
-        'updated_by' => 'string',
-        'is_active' => 'boolean',
-    ];
 
     static function getStoreValidator(Request $request): array
     {

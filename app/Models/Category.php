@@ -3,11 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 
 class Category extends BaseModel
 {
-    public $active = true;
+    use HasFactory;
 
     protected $fillable = [
         'name',
@@ -17,8 +17,35 @@ class Category extends BaseModel
     protected $updatable = [
         'name' => 'string',
         'description' => 'string',
-        'created_by' => 'string',
-        'updated_by' => 'string',
-        'is_active' => 'boolean'
     ];
+
+    static function getStoreValidator(Request $request): array
+    {
+        return array_merge(
+            [
+                'description' => [
+                    'required','string'
+                ],
+                'name' => [
+                    'required','string'
+                ]
+            ],
+            parent::getStoreValidator($request)
+        );
+    }
+
+    static function getUpdateValidator(Request $request, string $id): array
+    {
+        return array_merge(
+            [
+                'description' => [
+                    'string'
+                ],
+                'name' => [
+                    'string'
+                ]
+            ],
+            parent::getStoreValidator($request)
+        );
+    }
 }

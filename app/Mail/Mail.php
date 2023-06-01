@@ -11,10 +11,10 @@ class Mail
     /**
      * @throws GuzzleException
      */
-    public static function sendMail($toMail, $subject, $htmlContent = "<html><body><h1>Hello, World!</h1></body></html>")
+    public static function sendMail($toMail, $subject, $htmlContent)
     {
-        $url = 'https://rapidprod-sendgrid-v1.p.rapidapi.com/mail/send';
-        $sender = env('Mail_USERNAME');
+        $url = 'https://'.Constant::MAIL_X_RAPIDAPI_HOST.'/mail/send';
+        $sender = env('SOCAPP_MAIL_ADDRESS');
         $data = array(
             "personalizations" => array(
                 array(
@@ -40,19 +40,14 @@ class Mail
         $client = new Client([
             'headers' => [
                 'Content-Type' => 'application/json',
-                'X-RapidAPI-Host' => Constant::Mail_X_RapidAPI_Host,
+                'X-RapidAPI-Host' => Constant::MAIL_X_RAPIDAPI_HOST,
                 'X-RapidAPI-Key' =>  env("X_RAPIDAPI_KEY")
             ]
         ]);
 
-        $response = $client->post($url, [
+       $client->post($url, [
             'json' => $data
         ]);
 
-        $status_code = $response->getStatusCode();
-        $response_body = $response->getBody()->getContents();
-
-        echo "Status Code: " . $status_code . "\n";
-        echo "Response: " . $response_body . "\n";
     }
 }
