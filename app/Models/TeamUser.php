@@ -11,6 +11,10 @@ class TeamUser extends BaseModel
 
     protected $table = 'team_user';
 
+    protected $updatable = [
+        'is_leader' => 'bool',
+    ];
+
     static function getStoreValidator(Request $request): array
     {
         return array_merge(
@@ -23,6 +27,18 @@ class TeamUser extends BaseModel
                 ],
             ],
             parent::getStoreValidator($request)
+        );
+    }
+
+    static function getUpdateValidator(Request $request, string $id): array
+    {
+        return array_merge(
+            [
+                'is_leader' => [
+                    'bool'
+                ]
+            ],
+            parent::getUpdateValidator($request, $id)
         );
     }
 

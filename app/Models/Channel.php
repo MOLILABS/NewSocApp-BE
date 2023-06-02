@@ -24,10 +24,10 @@ class Channel extends BaseModel
         try {
             $client = new Client();
 
-            $response = $client->request('GET', 'https://' . Constant::Tiktok_X_RapidAPI_Host . '/profile/' . $id . '?schemaType=1', [
+            $response = $client->request('GET', 'https://' . Constant::TIKTOK_X_RAPIDAPI_HOST . '/profile/' . $id . '?schemaType=1', [
                 'headers' => [
                     'X-RapidAPI-Key' => env("X_RAPIDAPI_KEY"),
-                    'X-RapidAPI-Host' => Constant::Tiktok_X_RapidAPI_Host
+                    'X-RapidAPI-Host' => Constant::TIKTOK_X_RAPIDAPI_HOST
                 ],
             ]);
             $data = json_decode($response->getBody());
@@ -46,9 +46,9 @@ class Channel extends BaseModel
             if (!str_contains($id, '@')) {
                 $client = new Client();
 
-                $response = $client->request('GET', 'https://' . Constant::Youtube_X_RapidAPI_Host . '/channel/details?channel_id=' . $id, [
+                $response = $client->request('GET', 'https://' . Constant::YOUTUBE_X_RAPIDAPI_HOST . '/channel/details?channel_id=' . $id, [
                     'headers' => [
-                        'X-RapidAPI-Host' => Constant::Youtube_X_RapidAPI_Host,
+                        'X-RapidAPI-Host' => Constant::YOUTUBE_X_RAPIDAPI_HOST,
                         'X-RapidAPI-Key' => env("X_RAPIDAPI_KEY"),
                     ],
                 ]);
@@ -143,16 +143,16 @@ class Channel extends BaseModel
         $platform_id = $request['platform_id'];
         $result = Platform::query()->where('id', $platform_id)->first();
         $data = [];
-        if (Constant::TIKTOK === $result->name) {
+        if (Platform::TIKTOK === $result->name) {
             $data = $this->getTiktokInfo($channel_id);
         }
-        if (Constant::YOUTUBE === $result->name) {
+        if (Platform::YOUTUBE === $result->name) {
             $data = $this->getYoutubeInfo($channel_id);
         }
-        if (Constant::FACEBOOK === $result->name) {
+        if (Platform::FACEBOOK === $result->name) {
             $data = $this->getFacebookInfo($channel_id);
         }
-        if (Constant::WEBSITE === $result->name) {
+        if (Platform::WEBSITE === $result->name) {
             $data = $this->getWebsiteInfo($channel_id);
         }
         return ['logo' => $data[1], 'name' => $data[0]];

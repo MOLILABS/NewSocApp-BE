@@ -15,6 +15,11 @@ class Platform extends BaseModel
         'logo',
     ];
 
+    const TIKTOK = 'tiktok';
+    const YOUTUBE = 'youtube';
+    const WEBSITE = 'website';
+    const FACEBOOK = 'facebook';
+
     const PLATFORM_TYPES = [
         'facebook' => [
             'description' => 'Facebook',

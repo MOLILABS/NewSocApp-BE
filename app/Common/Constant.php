@@ -12,12 +12,8 @@ class Constant
     const OTP_CHANGED = [001, 'OTP changed'];
     const OTP_TIMEOUT = [002, 'OTP timeout'];
     const ALREADY_VERIFIED_EMAIL = [003, 'Already verified email'];
-    const Tiktok_X_RapidAPI_Host = 'tiktok28.p.rapidapi.com';
-    const Youtube_X_RapidAPI_Host = 'youtube-v2.p.rapidapi.com';
-    const TIKTOK = 'tiktok';
-    const YOUTUBE = 'youtube';
-    const WEBSITE = 'website';
-    const FACEBOOK = 'facebook';
+    const TIKTOK_X_RAPIDAPI_HOST = 'tiktok28.p.rapidapi.com';
+    const YOUTUBE_X_RAPIDAPI_HOST = 'youtube-v2.p.rapidapi.com';
     // Common fields
     const CREATED_BY = 'created_by';
     const UPDATED_BY = 'updated_by';
