@@ -25,8 +25,8 @@ class UserSeeder extends Seeder
                 'name' => env('ADMIN_NAME'),
                 'password' => Hash::make(env('ADMIN_PASSWORD')),
                 'remember_token' => null,
-                'role' => array_keys(User::ROLES)[0],
-                'confirm_email' => 1
+                'confirm_email' => 1,
+                'role' => array_keys(User::ROLES)[0]
             ]);
 
         $adminRoleId = DB::table(Role::retrieveTableName())->where('name', '=', 'admin')->get('id');

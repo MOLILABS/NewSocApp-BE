@@ -45,7 +45,8 @@ Route::middleware(['auth:sanctum', AuthStore::class])->group(function () {
     Route::resource('team-user', TeamUserController::class);
     Route::post('permission/assign', [PermissionController::class, 'assignPermissionToRole']);
     Route::post('role/assign', [RoleController::class, 'assignRoleToUser']);
-    Route::put('user/{id}/salary', [UserController::class, 'updateSalary']);
+    Route::put('users/{id}/salary', [UserController::class, 'updateSalary']);
+    Route::put('users/', [UserController::class, 'updateUser']);
     Route::resource('absence-types', AbsenceController::class);
     Route::resource('absence-request', AbsenceRequestController::class);
 });
