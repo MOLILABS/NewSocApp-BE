@@ -35,6 +35,8 @@ class AuthController extends Controller
         $link = env('FE_URL'). 'auth/confirm?email='. $email . '&otp='. $user->otp;
         $htmlContent = str_replace('{{link}}', $link, $htmlContent);
         Mail::sendMail($email, 'Socapp - Activate your account', $htmlContent);
+        User::where('email',$email)
+            ->update(['last_sent' => new DateTime()]);
     }
 
     public function checkExpiredTime(Request $request)
@@ -174,9 +176,9 @@ class AuthController extends Controller
 
             $this->sendRegisterMail($request);
 
-            return Helper::getResponse([
+            return Helper::getResponse(
                 'Register success'
-            ]);
+            );
         } catch (Throwable $th) {
             return Helper::handleApiError($th);
         }
