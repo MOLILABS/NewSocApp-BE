@@ -103,6 +103,7 @@ class User extends Authenticatable
      * @return Application|Response|ResponseFactory
      */
     public function updateSalary(Request $request, $id)
+
     {
         $validator = Validator::make(
             $request->all(),
@@ -125,7 +126,7 @@ class User extends Authenticatable
         $salary = $request->get('salary');
         try {
             if (Gate::allows('updateSalary')) {
-                DB::table('users')
+                DB::table(User::TABLE_NAME)
                     ->where('id', '=', $id)
                     ->update([
                         'salary' => $salary

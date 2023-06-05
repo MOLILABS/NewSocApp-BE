@@ -35,4 +35,6 @@ Route::middleware(['auth:sanctum', AuthStore::class])->group(function () {
     Route::put('users/', [UserController::class, 'updateUser']);
     Route::resource('absence-types', AbsenceController::class);
     Route::resource('absence-request', AbsenceRequestController::class);
+  
+    Route::post('absence-request/answer', [AbsenceRequestController::class, 'answerRequest']);
 });
