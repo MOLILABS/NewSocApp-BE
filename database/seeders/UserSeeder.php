@@ -26,6 +26,7 @@ class UserSeeder extends Seeder
                 'password' => Hash::make(env('ADMIN_PASSWORD')),
                 'remember_token' => null,
                 'confirm_email' => 1,
+                'avatar' => User::generateRandomColor(),
                 'role' => array_keys(User::ROLES)[0]
             ]);
 
