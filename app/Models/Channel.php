@@ -10,6 +10,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use App\Common\Constant as Constant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\Request;
 
 class Channel extends BaseModel
@@ -173,5 +174,12 @@ class Channel extends BaseModel
         );
     }
 
+    /**
+     * @return BelongsTo
+     */
+    public function platform(): BelongsTo
+    {
+        return $this->belongsTo(Platform::class);
+    }
 
 }

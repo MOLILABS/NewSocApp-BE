@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\Request;
 
 class CategoryChannel extends BaseModel
@@ -27,27 +28,39 @@ class CategoryChannel extends BaseModel
     }
 
     protected $fillable = [
-        'name',
-        'description'
+        'category_id',
+        'channel_id'
+    ];
+
+    protected $filters = [
+        'channel_id'
     ];
 
     protected $updatable = [
-        'name' => 'string',
-        'description' => 'string',
+        'category_id' => 'bool',
+        'channel_id' => 'bool',
     ];
 
     static function getUpdateValidator(Request $request, string $id): array
     {
         return array_merge(
             [
-                'description' => [
-                    'string'
+                'category_id' => [
+                    'bool'
                 ],
-                'name' => [
-                    'string'
+                'channel_id' => [
+                    'bool'
                 ]
             ],
             parent::getStoreValidator($request)
         );
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
     }
 }

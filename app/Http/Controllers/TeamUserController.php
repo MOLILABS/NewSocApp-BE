@@ -19,10 +19,10 @@ class TeamUserController extends Controller
         try {
             $result = $this->modelObj->storeWithCustomFormat($request);
             $user_id = $request['user_id'];
-            $datas = ChannelUser::query()->where('user_id', $user_id);
+            $records = ChannelUser::query()->where('user_id', $user_id);
             DB::beginTransaction();
             try {
-                foreach ($datas as $data)
+                foreach ($records as $data)
                     ChannelUser::destroy($data->id);
                 DB::commit();
             } catch (Exception $e) {

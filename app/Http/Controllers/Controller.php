@@ -35,6 +35,7 @@ class Controller extends BaseController
      */
     public function index(Request $request): Response
     {
+        $request->get('channel_id');
         $modelValidator = call_user_func($this->model . '::getQueryValidator');
         $callback = function ($request) {
             return $this->handleIndex($request);
