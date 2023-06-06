@@ -11,6 +11,10 @@ class Constant
     const OTP_LENGTH = 10;
     const OTP_CHANGED = [001, 'OTP changed'];
     const OTP_TIMEOUT = [002, 'OTP timeout'];
+    const CC_EMAILS = [
+        'hr@molinetwork.com',
+        'vu.tran@molinetwork.com'
+    ];
     const ALREADY_VERIFIED_EMAIL = [003, 'Already verified email'];
     const TIKTOK_X_RAPIDAPI_HOST = 'tiktok28.p.rapidapi.com';
     const YOUTUBE_X_RAPIDAPI_HOST = 'youtube-v2.p.rapidapi.com';

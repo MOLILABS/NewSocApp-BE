@@ -38,6 +38,7 @@ class UserSeeder extends Seeder
                 'model_id' => $admin
             ]);
 
+
         $absenceTypes = AbsenceType::ABSENCE_TYPES;
         $excludedCodes = ['W', 'W/2'];
         DB::table(AbsenceType::retrieveTableName())

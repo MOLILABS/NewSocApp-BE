@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Throwable;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -144,7 +145,7 @@ class AuthController extends Controller
                 return Helper::getResponse(null, $validateUser->errors());
             }
             User::create([
-                'otp' => base64_encode(random_bytes(Constant::OTP_LENGTH)),
+                'otp' => Str::random(Constant::OTP_LENGTH),
                 'name' => $request['name'],
                 'email' => $request['email'],
                 'password' => Hash::make($request['password']),
