@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Common\Helper;
 use App\Models\ChannelUser;
 use App\Models\TeamUser;
+use App\Models\User;
 use Exception;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -29,5 +31,28 @@ class ChannelUserController extends Controller
         } catch (Exception $e) {
             return Helper::handleApiError($e);
         }
+    }
+
+    static function getStoreValidator(Request $request): array
+    {
+        return array_merge(
+            [
+                'user_id' => [
+                    'required'
+                ],
+                'team_id' => [
+                    'required'
+                ]
+            ],
+            parent::getStoreValidator($request)
+        );
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }

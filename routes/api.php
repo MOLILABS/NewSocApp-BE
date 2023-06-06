@@ -6,6 +6,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChannelController;
 use App\Http\Controllers\ChannelUserController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\PlatformController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\TeamUserController;
 use App\Http\Controllers\AbsenceController;
@@ -39,6 +40,7 @@ Route::middleware(['auth:sanctum', AuthStore::class])->group(function () {
     Route::resource('groups', GroupController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('teams', TeamController::class);
+    Route::resource('platforms', PlatformController::class);
     Route::resource('channels', ChannelController::class);
     Route::resource('category-channel', CategoryChannelController::class);
     Route::resource('channel-user', ChannelUserController::class);
