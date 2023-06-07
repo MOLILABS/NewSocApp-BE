@@ -93,7 +93,7 @@ class BaseModel extends Model
         }
         $model = $this->filterByRelation($model);
         return $model
-            ->simplePaginate($limit ?: BaseModel::CUSTOM_LIMIT)
+            ->paginate($limit ?: BaseModel::CUSTOM_LIMIT)
             ->appends($request);
     }
 
@@ -110,7 +110,7 @@ class BaseModel extends Model
                     ->where($this->queryBy, $id)
                     ->orWhere('id', $id);
             })
-            ->where(Constant::IS_ACTIVE, $id)
+            ->where(Constant::IS_ACTIVE, 1)
             ->select($this->getAliasString())
             ->first();
     }
@@ -136,13 +136,14 @@ class BaseModel extends Model
      * @param $id
      * @return Model|null
      */
-    public function updateWithCustomFormat(Request $request, $id)
+    public function updateWithCustomFormat(Request $request, $id): ?Model
     {
         try {
             /** @var Model $model */
             $model = with(new static)::find($id);
             if ($model) {
                 foreach (collect($request->all())->only(array_keys($this->updatable)) as $key => $item) {
+                    echo 2;
                     if ($this->updatable[$key] == 'bool') {
                         $item = (bool) $item;
                     } elseif ($this->updatable[$key] == 'int') {

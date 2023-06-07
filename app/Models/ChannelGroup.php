@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\Request;
 
-class CategoryChannel extends BaseModel
+class ChannelGroup extends BaseModel
 {
     use HasFactory;
 
-    protected $table = 'category_channel';
+    protected $table = 'channel_group';
 
     static function getStoreValidator(Request $request): array
     {
@@ -19,7 +19,7 @@ class CategoryChannel extends BaseModel
                 'channel_id' => [
                     'required'
                 ],
-                'category_id' => [
+                'group_id' => [
                     'required'
                 ],
             ],
@@ -28,28 +28,24 @@ class CategoryChannel extends BaseModel
     }
 
     protected $fillable = [
-        'category_id',
-        'channel_id'
-    ];
-
-    protected $filters = [
+        'group_id',
         'channel_id'
     ];
 
     protected $updatable = [
-        'category_id' => 'int',
-        'channel_id' => 'int',
+        'group_id' => 'bool',
+        'channel_id' => 'bool',
     ];
 
     static function getUpdateValidator(Request $request, string $id): array
     {
         return array_merge(
             [
-                'category_id' => [
-                    'int'
+                'group_id' => [
+                    'bool'
                 ],
                 'channel_id' => [
-                    'int'
+                    'bool'
                 ]
             ],
             parent::getStoreValidator($request)
@@ -59,8 +55,8 @@ class CategoryChannel extends BaseModel
     /**
      * @return BelongsTo
      */
-    public function category(): BelongsTo
+    public function group(): BelongsTo
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Group::class);
     }
 }

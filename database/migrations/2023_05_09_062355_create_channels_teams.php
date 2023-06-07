@@ -4,6 +4,7 @@ use App\Common\CustomBlueprint;
 use App\Models\Category;
 use App\Models\CategoryChannel;
 use App\Models\Channel;
+use App\Models\ChannelGroup;
 use App\Models\ChannelUser;
 use App\Models\Group;
 use App\Models\Growth;
@@ -11,7 +12,6 @@ use App\Models\Platform;
 use App\Models\Team;
 use App\Models\TeamUser;
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Support\Facades\Schema;
 use App\Common\CustomSchema;
 
 class CreateChannelsTeams extends Migration
@@ -73,6 +73,14 @@ class CreateChannelsTeams extends Migration
             $table->foreign('channel_id')->references('id')->on(Channel::retrieveTableName())->onDelete('cascade');
         });
 
+        CustomSchema::create(ChannelGroup::retrieveTableName(), function (CustomBlueprint $table) {
+            $table->audit();
+            $table->integer('group_id')->unsigned();
+            $table->foreign('group_id')->references('id')->on(Group::retrieveTableName())->onDelete('cascade');
+            $table->integer('channel_id')->unsigned();
+            $table->foreign('channel_id')->references('id')->on(Channel::retrieveTableName())->onDelete('cascade');
+        });
+
         CustomSchema::create(ChannelUser::retrieveTableName(), function (CustomBlueprint $table) {
             $table->audit();
             $table->integer('user_id')->unsigned();
@@ -109,6 +117,7 @@ class CreateChannelsTeams extends Migration
         CustomSchema::dropIfExists(Channel::retrieveTableName());
         CustomSchema::dropIfExists(Growth::retrieveTableName());
         CustomSchema::dropIfExists(CategoryChannel::retrieveTableName());
+        CustomSchema::dropIfExists(ChannelGroup::retrieveTableName());
         CustomSchema::dropIfExists(ChannelUser::retrieveTableName());
         CustomSchema::dropIfExists(TeamUser::retrieveTableName());
     }
