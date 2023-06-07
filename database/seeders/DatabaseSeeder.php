@@ -22,8 +22,9 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
         ]);
         // Delete resource files after seeding
-        $resourceFolder = storage_path("/resource");
-        $this->deleteDirectory($resourceFolder);
+        // TODO: should only remove the ones with credential
+//        $resourceFolder = storage_path("/resource");
+//        $this->deleteDirectory($resourceFolder);
     }
 
     /**

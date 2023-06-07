@@ -85,10 +85,10 @@ class User extends Authenticatable
 
     const ROLES = [
         "admin" => self::ABILITIES,
+        "creator" => [],
         "leader" => [],
         "accountant" => [],
         "hr" => [],
-        "finance" => [],
         "guest" => []
     ];
 
