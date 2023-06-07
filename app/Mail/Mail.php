@@ -11,10 +11,10 @@ class Mail
     /**
      * @throws GuzzleException
      */
-    public static function sendMail($toMail, $subject, $htmlContent)
+    public static function sendMail($toMail, $subject, $htmlContent, $cc = null)
     {
         $url = 'https://'.Constant::MAIL_X_RAPIDAPI_HOST.'/mail/send';
-        $sender = env('MAIL_USERNAME');
+        $sender = env('SOCAPP_MAIL_ADDRESS');
         $data = array(
             "personalizations" => array(
                 array(
@@ -36,6 +36,16 @@ class Mail
                 )
             )
         );
+
+        if ($cc) {
+            $data["personalizations"][0]["cc"] = [];
+            
+            foreach ($cc as $key => $value) {
+                $data["personalizations"][0]["cc"][] = [
+                    "email" => $value
+                ];
+            }
+        }
 
         $client = new Client([
             'headers' => [

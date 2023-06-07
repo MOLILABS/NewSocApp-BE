@@ -22,6 +22,7 @@ use App\Http\Controllers\UserController;
 */
 
 Route::post('auth/confirm-email', [AuthController::class, 'confirmEmail']);
+Route::get('auth/send-email', [AuthController::class, 'sendRegisterMail']);
 Route::get('auth/expired-time', [AuthController::class, 'checkExpiredTime']);
 Route::post('auth/register', [AuthController::class, 'createUser']);
 Route::post('auth/login', [AuthController::class, 'loginUser']);
@@ -31,10 +32,10 @@ Route::middleware(['auth:sanctum', AuthStore::class])->group(function () {
 
     Route::post('permission/assign', [PermissionController::class, 'assignPermissionToRole']);
     Route::post('role/assign', [RoleController::class, 'assignRoleToUser']);
-    Route::put('user/{id}/salary', [UserController::class, 'updateSalary']);
-    
+    Route::put('users/{id}/salary', [UserController::class, 'updateSalary']);
+    Route::put('users/', [UserController::class, 'updateUser']);
     Route::resource('absence-types', AbsenceController::class);
     Route::resource('absence-request', AbsenceRequestController::class);
-
-    Route::resource('channel/growth', GrowthController::class);
+  
+    Route::post('absence-request/answer', [AbsenceRequestController::class, 'answerRequest']);
 });

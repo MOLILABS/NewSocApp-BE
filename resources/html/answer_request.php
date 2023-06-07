@@ -130,56 +130,18 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td align="center"
-                                    style="font-size:0px;padding:10px 25px 10px 25px;padding-top:10px;padding-right:25px;padding-bottom:10px;padding-left:25px;word-break:break-word;">
-                                    <table border="0" cellpadding="0" cellspacing="0" role="presentation"
-                                           style="border-collapse:collapse;border-spacing:0px;">
-                                        <tbody>
-                                        <tr>
-                                            <td style="width:540px;"><img alt="Looking up at skyscrapers in perspective"
-                                                                          height="auto"
-                                                                          src="https://0llhi.mjt.lu/tplimg/0llhi/b/l03yj/5g1w.jpeg"
-                                                                          style="border:none;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;"
-                                                                          width="540"></td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                            <tr>
                                 <td align="left"
                                     style="font-size:0px;padding:10px 25px;padding-top:0px;padding-bottom:0px;word-break:break-word;">
                                     <div
                                         style="font-family:Arial, sans-serif;font-size:13px;letter-spacing:normal;line-height:1;text-align:left;color:#000000;">
                                         <p class="text-build-content"
                                            style="text-align: center; margin: 10px 0; margin-top: 10px;"
-                                           data-testid="kNBhwDZBzk1oLdNNMmIcP"><span style="font-family:Arial;">You requested to have an account created at Socapp. If you didn’t request this, please ignore this email.</span>
+                                           data-testid="kNBhwDZBzk1oLdNNMmIcP"><span style="font-family:Arial;">
+                                           {{response}} <br><br>
+                                           {{note}}
+                                        </span>
                                         </p>
-                                        <p class="text-build-content" data-testid="kNBhwDZBzk1oLdNNMmIcP"
-                                           style="margin: 10px 0;"><span style="font-family:Arial;"></span></p>
-                                        <p class="text-build-content"
-                                           style="text-align: center; margin: 10px 0; margin-bottom: 10px;"
-                                           data-testid="kNBhwDZBzk1oLdNNMmIcP"><span style="font-family:Arial;"><b>Please confirm your account by clicking this button:</b></span>
-                                        </p></div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td align="center" vertical-align="middle"
-                                    style="font-size:0px;padding:20px 25px 20px 25px;padding-top:20px;padding-right:25px;padding-bottom:20px;padding-left:25px;word-break:break-word;">
-                                    <table border="0" cellpadding="0" cellspacing="0" role="presentation"
-                                           style="border-collapse:separate;width:100%;line-height:100%;">
-                                        <tbody>
-                                        <tr>
-                                            <td align="center" bgcolor="#fb0030" role="presentation"
-                                                style="border:none;border-radius:30px;cursor:auto;mso-padding-alt:15px 25px 15px 25px;background:#fb0030;"
-                                                valign="middle"><a href="{{link}}"
-                                                                   style="display:inline-block;background:#fb0030;color:#ffffff;font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:16px;font-weight:normal;line-height:120%;margin:0;text-decoration:none;text-transform:none;padding:15px 25px 15px 25px;mso-padding-alt:0px;border-radius:30px;"
-                                                                   target="_blank"><span
-                                                        style="background-color:#fb0030;color:#ffffff;font-family:Tahoma;font-size:14px;"><b>Confirm</b></span></a>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+                                    </div>
                                 </td>
                             </tr>
                             </tbody>
@@ -365,6 +327,42 @@
                     <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                         <tr>
                             <td class="" style="vertical-align:top;width:600px;"><![endif]-->
+                    <div class="mj-column-per-100 mj-outlook-group-fix"
+                         style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+                        <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+                            <tbody>
+                            <tr>
+                                <td style="vertical-align:top;padding:0;">
+                                    <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+                                        <tbody>
+                                        <tr>
+                                            <td align="center"
+                                                style="font-size:0px;padding:10px 25px;word-break:break-word;">
+                                                <div
+                                                    style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:11px;line-height:22px;text-align:center;color:#000000;">
+                                                    <p style="margin: 10px 0;">This e-mail has been sent to
+                                                        [[EMAIL_TO]], <a href="[[UNSUB_LINK_EN]]"
+                                                                         style="color:inherit;text-decoration:none;"
+                                                                         target="_blank">click here to unsubscribe</a>.
+                                                    </p></div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center"
+                                                style="font-size:0px;padding:10px 25px;word-break:break-word;">
+                                                <div
+                                                    style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:11px;line-height:22px;text-align:center;color:#000000;">
+                                                    <p style="margin: 10px 0;"> VN</p></div>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!--[if mso | IE]></td></tr></table><![endif]--></td>
             </tr>
             </tbody>
         </table>
