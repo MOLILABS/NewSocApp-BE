@@ -19,7 +19,7 @@ class CreateBase extends Migration
             $roles = array_keys(User::ROLES);
             $table->string('name')->nullable(false);
             $table->string('email')->nullable(false)->unique();
-            $table->string('avatar')->nullable();
+            $table->char('avatar', 7)->nullable();
             $table->string('password')->nullable(false);
             $table->boolean('confirm_email')->default(false);
             $table->dateTime('last_sent')->nullable();

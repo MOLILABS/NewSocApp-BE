@@ -1,5 +1,14 @@
 <?php
 
+
+use App\Http\Controllers\CategoryChannelController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ChannelController;
+use App\Http\Controllers\ChannelUserController;
+use App\Http\Controllers\GroupController;
+use App\Http\Controllers\PlatformController;
+use App\Http\Controllers\TeamController;
+use App\Http\Controllers\TeamUserController;
 use App\Http\Controllers\AbsenceController;
 use App\Http\Controllers\AbsenceRequestController;
 use App\Http\Middleware\AuthStore;
@@ -28,7 +37,14 @@ Route::post('auth/login', [AuthController::class, 'loginUser']);
 Route::middleware(['auth:sanctum', AuthStore::class])->group(function () {
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
-
+    Route::resource('groups', GroupController::class);
+    Route::resource('categories', CategoryController::class);
+    Route::resource('teams', TeamController::class);
+    Route::resource('platforms', PlatformController::class);
+    Route::resource('channels', ChannelController::class);
+    Route::resource('category-channel', CategoryChannelController::class);
+    Route::resource('channel-user', ChannelUserController::class);
+    Route::resource('team-user', TeamUserController::class);
     Route::post('permission/assign', [PermissionController::class, 'assignPermissionToRole']);
     Route::post('role/assign', [RoleController::class, 'assignRoleToUser']);
     Route::put('users/{id}/salary', [UserController::class, 'updateSalary']);

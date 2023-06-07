@@ -16,7 +16,8 @@ class Constant
         'vu.tran@molinetwork.com'
     ];
     const ALREADY_VERIFIED_EMAIL = [003, 'Already verified email'];
-
+    const TIKTOK_X_RAPIDAPI_HOST = 'tiktok28.p.rapidapi.com';
+    const YOUTUBE_X_RAPIDAPI_HOST = 'youtube-v2.p.rapidapi.com';
     // Common fields
     const CREATED_BY = 'created_by';
     const UPDATED_BY = 'updated_by';
