@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  socapp_be_db:
+    image: mysql:5.7
+    container_name: socapp_be_db
+    restart: unless-stopped
+    environment:
+      - MYSQL_DATABASE=socapp
+      - MYSQL_ROOT_PASSWORD=gYUrGzQZ8Ceqwe2344uKGmFnbcZXHY
+      - MYSQL_USER=u_socapp_be
+      - MYSQL_PASSWORD=y7mt7yyGa123avxcvxcQGK9UWav
+    volumes:
+      - /data/db/socapp-be:/var/lib/mysql
+    command: '--default-authentication-plugin=mysql_native_password'
+  socapp_be_api:
+    depends_on:
+      - socapp_be_db
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: socapp_be_api
+    restart: unless-stopped
+    ports:
+      - "9001:9000"
+    env_file:
+      - .env
+    volumes:
+      - ./:/var/www
+  socapp_be_nginx:
+    depends_on:
+      - socapp_be_api
+    build:
+      context: .
+      dockerfile: ./Dockerfile.nginx
+    container_name: socapp_be_nginx
+    restart: unless-stopped
+    ports:
+      - "8988:80"
+    volumes:
+      - ./:/var/www
+      - ./vhosts:/etc/nginx/conf.d

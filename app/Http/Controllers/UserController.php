@@ -13,7 +13,14 @@ class UserController extends Controller
 
     public function updateSalary(Request $request, $id)
     {
+        /** @var User $modelObj */
         $modelObj = $this->modelObj;
         return $modelObj->updateSalary($request, $id);
+    }
+
+    public function updateUser(Request $request)
+    {
+        $modelObj = $this->modelObj;
+        return $modelObj->updateUser($request);
     }
 }

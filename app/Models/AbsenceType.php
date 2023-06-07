@@ -22,7 +22,7 @@ class AbsenceType extends BaseModel
         'code' => 'string',
         'description' => 'string'
     ];
-
+  
     const INTERMEDIATE_TABLES = [
         'absence_types_user',
         'check_in',

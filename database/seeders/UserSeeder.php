@@ -25,6 +25,7 @@ class UserSeeder extends Seeder
                 'name' => env('ADMIN_NAME'),
                 'password' => Hash::make(env('ADMIN_PASSWORD')),
                 'remember_token' => null,
+                'confirm_email' => 1,
                 'role' => array_keys(User::ROLES)[0]
             ]);
 
@@ -35,6 +36,7 @@ class UserSeeder extends Seeder
                 'model_type' => User::class,
                 'model_id' => $admin
             ]);
+
 
         $absenceTypes = AbsenceType::ABSENCE_TYPES;
         $excludedCodes = ['W', 'W/2'];
