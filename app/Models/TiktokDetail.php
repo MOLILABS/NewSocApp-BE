@@ -35,7 +35,7 @@ class TiktokDetail extends BaseModel
         'between'
     ];
 
-    static function getQueryValidator(): array
+    static function getQueryValidator(Request $request): array
     {
         $global = app(GlobalVariable::class);
         return array_merge(
@@ -48,7 +48,7 @@ class TiktokDetail extends BaseModel
                     }),
                 ]
             ],
-            parent::getQueryValidator()
+            parent::getQueryValidator($request)
         );
     }
 

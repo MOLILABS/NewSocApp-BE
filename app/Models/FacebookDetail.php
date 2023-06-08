@@ -36,20 +36,26 @@ class FacebookDetail extends BaseModel
         'between'
     ];
 
-    static function getQueryValidator(): array
+    static function getQueryValidator(Request $request): array
     {
         $global = app(GlobalVariable::class);
+        $platforms = array_keys(Platform::PLATFORMS);
         return array_merge(
             [
                 'channel_id' => [
                     'integer',
                     'required',
+                    Rule::exists(Channel::retrieveTableName(), 'id')->where(function ($query) use ($platforms, $request) {
+                        $query
+                            ->where('platform_id', '=', ($platforms[0] + 1))
+                            ->where('id', '=', $request->get('channel_id'));
+                    }),
                     $global->currentUser->hasPermissionTo('admin') ? '' : Rule::exists('channel_user', 'channel_id')->where(function ($query) use ($global) {
                         $query->where('user_id', '=', $global->currentUser->id);
                     })
                 ]
             ],
-            parent::getQueryValidator()
+            parent::getQueryValidator($request)
         );
     }
 
@@ -86,14 +92,14 @@ class FacebookDetail extends BaseModel
                 'channel_id' => [
                     'required',
                     'integer',
-                    $global->currentUser->hasPermissionTo('admin') ? '' : Rule::exists('channel_user', 'channel_id')->where(function ($query) use ($global) {
-                        $query->where('user_id', '=', $global->currentUser->id);
-                    }),
                     Rule::exists(Channel::retrieveTableName(), 'id')->where(function ($query) use ($platforms, $request) {
                         $query
                             ->where('platform_id', '=', ($platforms[0] + 1))
                             ->where('id', '=', $request->get('channel_id'));
-                    })
+                    }),
+                    $global->currentUser->hasPermissionTo('admin') ? '' : Rule::exists('channel_user', 'channel_id')->where(function ($query) use ($global) {
+                        $query->where('user_id', '=', $global->currentUser->id);
+                    }),
                 ]
             ],
             parent::getStoreValidator($request)
@@ -133,7 +139,7 @@ class FacebookDetail extends BaseModel
         $model = parent::queryWithCustomFormat($request);
         $model = $model->where('channel_id', '=', $channel_id);
         // Haven't check for empty result yet
-        return $model->toQuery()->simplePaginate(BaseModel::CUSTOM_LIMIT);
+        return $model;
     }
 
     /**

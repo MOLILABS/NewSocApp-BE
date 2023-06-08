@@ -32,7 +32,7 @@ class YoutubeDetail extends BaseModel
         'channel_id' => 'integer'
     ];
 
-    static function getQueryValidator(): array
+    static function getQueryValidator(Request $request): array
     {
         $global = app(GlobalVariable::class);
         return array_merge(
@@ -45,7 +45,7 @@ class YoutubeDetail extends BaseModel
                     })
                 ]
             ],
-            parent::getQueryValidator()
+            parent::getQueryValidator($request)
         );
     }
 
