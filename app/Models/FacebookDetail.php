@@ -56,6 +56,7 @@ class FacebookDetail extends BaseModel
     static function getStoreValidator(Request $request): array
     {
         $global = app(GlobalVariable::class);
+        $platforms = array_keys(Platform::PLATFORMS);
         return array_merge(
             [
                 'revenue' => [
@@ -87,6 +88,11 @@ class FacebookDetail extends BaseModel
                     'integer',
                     $global->currentUser->hasPermissionTo('admin') ? '' : Rule::exists('channel_user', 'channel_id')->where(function ($query) use ($global) {
                         $query->where('user_id', '=', $global->currentUser->id);
+                    }),
+                    Rule::exists(Channel::retrieveTableName(), 'id')->where(function ($query) use ($platforms, $request) {
+                        $query
+                            ->where('platform_id', '=', ($platforms[0] + 1))
+                            ->where('id', '=', $request->get('channel_id'));
                     })
                 ]
             ],
@@ -131,7 +137,7 @@ class FacebookDetail extends BaseModel
     }
 
     /**
-     * @return
+     * @return BelongsTo
      */
     public function channel(): BelongsTo
     {
