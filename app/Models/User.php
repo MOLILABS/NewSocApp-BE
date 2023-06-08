@@ -50,7 +50,8 @@ class User extends Authenticatable
         'password',
         'otp',
         'last_sent',
-        'confirm_email'
+        'confirm_email',
+        'avatar'
     ];
 
     /**
@@ -61,6 +62,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'otp'
     ];
 
     /**
@@ -195,9 +197,18 @@ class User extends Authenticatable
             DB::table('users')
                 ->where('id', '=', $global->currentUser->id)
                 ->update($data);
-            return Helper::getResponse(true);
+            $user = User::find($global->currentUser->id);
+            return Helper::getResponse(['user' => $user]);
         } catch (Exception $ex) {
             return Helper::handleApiError($ex);
         }
+    }
+
+    /**
+     * @return string
+     */
+    public static function generateRandomColor(): string
+    {
+        return '#' . substr(str_shuffle('ABCDEF0123456789'), 0, 6);
     }
 }
