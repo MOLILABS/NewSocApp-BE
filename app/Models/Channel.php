@@ -18,6 +18,10 @@ class Channel extends BaseModel
 {
     use HasFactory;
 
+    protected $filters = [
+        'platform_id'
+    ];
+
     /**
      * @throws GuzzleException
      */

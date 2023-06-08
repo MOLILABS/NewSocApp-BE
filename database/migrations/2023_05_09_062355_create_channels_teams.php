@@ -47,7 +47,7 @@ class CreateChannelsTeams extends Migration
             $table->char('channel_id');
             $table->char('link')->nullable();
             $table->char('name');
-            $table->string('logo', '2000');
+            $table->string('logo');
             $table->unsignedInteger('platform_id');
             $table->foreign('platform_id')->references('id')->on(Platform::retrieveTableName());
             $table->unique(['channel_id', 'platform_id']);
@@ -71,6 +71,7 @@ class CreateChannelsTeams extends Migration
             $table->foreign('category_id')->references('id')->on(Category::retrieveTableName())->onDelete('cascade');
             $table->integer('channel_id')->unsigned();
             $table->foreign('channel_id')->references('id')->on(Channel::retrieveTableName())->onDelete('cascade');
+            $table->unique(['channel_id', 'category_id']);
         });
 
         CustomSchema::create(ChannelGroup::retrieveTableName(), function (CustomBlueprint $table) {
@@ -79,6 +80,7 @@ class CreateChannelsTeams extends Migration
             $table->foreign('group_id')->references('id')->on(Group::retrieveTableName())->onDelete('cascade');
             $table->integer('channel_id')->unsigned();
             $table->foreign('channel_id')->references('id')->on(Channel::retrieveTableName())->onDelete('cascade');
+            $table->unique(['channel_id', 'group_id']);
         });
 
         CustomSchema::create(ChannelUser::retrieveTableName(), function (CustomBlueprint $table) {

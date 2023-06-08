@@ -143,7 +143,6 @@ class BaseModel extends Model
             $model = with(new static)::find($id);
             if ($model) {
                 foreach (collect($request->all())->only(array_keys($this->updatable)) as $key => $item) {
-                    echo 2;
                     if ($this->updatable[$key] == 'bool') {
                         $item = (bool) $item;
                     } elseif ($this->updatable[$key] == 'int') {

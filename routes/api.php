@@ -44,7 +44,9 @@ Route::middleware(['auth:sanctum', AuthStore::class])->group(function () {
     Route::resource('platforms', PlatformController::class);
     Route::resource('channels', ChannelController::class);
     Route::resource('category-channel', CategoryChannelController::class);
+    Route::delete('category-channel', [CategoryChannelController::class, 'deleteByForeignKey']);
     Route::resource('channel-group', ChannelGroupController::class);
+    Route::delete('channel-group', [ChannelGroupController::class, 'deleteByForeignKey']);
     Route::resource('channel-user', ChannelUserController::class);
     Route::resource('team-user', TeamUserController::class);
     Route::post('permission/assign', [PermissionController::class, 'assignPermissionToRole']);
@@ -53,6 +55,5 @@ Route::middleware(['auth:sanctum', AuthStore::class])->group(function () {
     Route::put('users/', [UserController::class, 'updateUser']);
     Route::resource('absence-types', AbsenceController::class);
     Route::resource('absence-request', AbsenceRequestController::class);
-
     Route::post('absence-request/answer', [AbsenceRequestController::class, 'answerRequest']);
 });
