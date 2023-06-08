@@ -72,6 +72,7 @@ class BaseModel extends Model
         $relations = $request->{'relation'};
         $relationsCount = $request->{'relationCount'};
         $groupBy = $this->groupBy;
+        $preFilteredRequest = $request;
         $request = $request->only($this->filters);
         $model = with(new static)::select();
         if ($relations) {
@@ -91,7 +92,7 @@ class BaseModel extends Model
             // TODO: it's a bug here, if use withCount and select together, it won't work
             $model = $model->select($this->getAliasString());
         }
-        $model = $this->filterByRelation($model, $request);
+        $model = $this->filterByRelation($model, $preFilteredRequest);
         return $model
             ->paginate($limit ?: BaseModel::CUSTOM_LIMIT)
             ->appends($request);
