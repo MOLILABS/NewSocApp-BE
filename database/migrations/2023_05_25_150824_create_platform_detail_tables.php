@@ -27,6 +27,8 @@ class CreatePlatformDetailTables extends Migration
             $table->unsignedInteger('reach');
             $table->unsignedInteger('follow');
             $table->unsignedInteger('post_amount');
+            $table->unsignedInteger('channel_id')->nullable(false);
+            $table->foreign('channel_id')->references('id')->on(Channel::retrieveTableName());
 
             $table->audit();
         });
@@ -37,6 +39,8 @@ class CreatePlatformDetailTables extends Migration
             $table->unsignedInteger('view');
             $table->unsignedInteger('subscriber');
             $table->unsignedInteger('video_amount');
+            $table->unsignedInteger('channel_id')->nullable(false);
+            $table->foreign('channel_id')->references('id')->on(Channel::retrieveTableName());
 
             $table->audit();
         });
@@ -47,6 +51,8 @@ class CreatePlatformDetailTables extends Migration
             $table->unsignedInteger('follow');
             $table->unsignedInteger('like');
             $table->unsignedInteger('video_amount');
+            $table->unsignedInteger('channel_id')->nullable(false);
+            $table->foreign('channel_id')->references('id')->on(Channel::retrieveTableName());
 
             $table->audit();
         });
