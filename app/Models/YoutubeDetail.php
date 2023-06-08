@@ -83,7 +83,7 @@ class YoutubeDetail extends BaseModel
                     }),
                     Rule::exists(Channel::retrieveTableName(), 'id')->where(function ($query) use ($platforms, $request) {
                         $query
-                            ->where('platform_id', '=', ($platforms[0] + 1))
+                            ->where('platform_id', '=', ($platforms[2] + 1))
                             ->where('id', '=', $request->get('channel_id'));
                     })
                 ]
