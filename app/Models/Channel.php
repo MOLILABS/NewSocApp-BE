@@ -2,17 +2,21 @@
 
 namespace App\Models;
 
-use App\Common\Helper;
-use DiDom\Document;
-use DiDom\Exceptions\InvalidSelectorException;
 use Exception;
+use DiDom\Document;
+use App\Common\Helper;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
-use App\Common\Constant as Constant;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Common\Constant as Constant;
+use App\Common\GlobalVariable;
+use Illuminate\Support\Facades\Gate;
+use GuzzleHttp\Exception\GuzzleException;
+use DiDom\Exceptions\InvalidSelectorException;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Pagination\Paginator;
 
 class Channel extends BaseModel
 {
@@ -175,6 +179,57 @@ class Channel extends BaseModel
         );
     }
 
+    public function queryWithCustomFormat(Request $request)
+    {
+        $model = parent::queryWithCustomFormat($request);
+        $global = app(GlobalVariable::class);
+        $user = $global->currentUser;
+
+        if (Gate::allows('showAllChannel')) {
+            return $model;
+        } else if (Gate::allows('showTeamChannel')) {
+            // Get user's teams
+            $teamIDs = DB::table(TeamUser::retrieveTableName())
+                ->where('user_id', '=', $user->id)
+                ->pluck('team_id');
+
+            // Get all user from all the team
+            $userIds = DB::table(TeamUser::retrieveTableName())
+                ->whereIn('team_id', $teamIDs)
+                ->pluck('user_id');
+
+            // Get all channel from all the user
+            $channels = DB::table(ChannelUser::retrieveTableName())
+                ->whereIn('user_id', $userIds)
+                ->pluck('channel_id');
+
+            // Get all unassigned channel
+            $unassignedChannels = DB::table(ChannelUser::retrieveTableName())
+                ->where('is_responsible', '=', 0)
+                ->pluck('channel_id');
+
+            if (count($unassignedChannels) <= 0) {
+                return $model->whereIn('id', $channels)->toQuery()->paginate(BaseModel::CUSTOM_LIMIT);
+            }
+
+            // Combine all channel id
+            $channelsId = $channels->merge($unassignedChannels)->unique();
+
+            return $model->whereIn('id', $channelsId)->toQuery()->paginate(BaseModel::CUSTOM_LIMIT);
+        } else if (Gate::allows('showUnassignedChannel')) {
+            $channelIds = DB::table(ChannelUser::retrieveTableName())
+                ->where('is_responsible', '=', 0)
+                ->pluck('channel_id');
+
+            if (count($channelIds) <= 0) {
+                $result = new Paginator($channelIds, BaseModel::CUSTOM_LIMIT);
+                return $result->setPath(request()->url());
+            }
+
+            return $model->whereIn('id', $channelIds)->toQuery()->paginate(BaseModel::CUSTOM_LIMIT);
+        }
+    }
+
     /**
      * @return BelongsTo
      */
@@ -198,5 +253,4 @@ class Channel extends BaseModel
     {
         return $this->hasMany(ChannelGroup::class);
     }
-
 }

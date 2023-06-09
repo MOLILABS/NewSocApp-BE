@@ -30,7 +30,7 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-        
+
         $global = app(GlobalVariable::class);
         Gate::define('assignRoleToUser', function ($user) use ($global) {
             $user = $global->currentUser;
@@ -54,6 +54,30 @@ class AuthServiceProvider extends ServiceProvider
             $user = $global->currentUser;
             // The user need to HAVE THE ROLE in intermediate table
             if ($user->hasPermissionTo(User::ABILITIES[4])) {
+                return true;
+            }
+            return false;
+        });
+
+        // showChannel
+        Gate::define('showAllChannel', function ($user) use ($global) {
+            $user = $global->currentUser;
+            if ($user->hasPermissionTo(User::ABILITIES[0])) {
+                return true;
+            }
+            return false;
+        });
+        Gate::define('showTeamChannel', function ($user) use ($global) {
+            // For who?
+            $user = $global->currentUser;
+            if ($user->hasPermissionTo(User::ABILITIES[2])) {
+                return true;
+            }
+            return false;
+        });
+        Gate::define('showUnassignedChannel', function ($user) use ($global) {
+            $user = $global->currentUser;
+            if ($user->hasPermissionTo(User::ABILITIES[3])) {
                 return true;
             }
             return false;
