@@ -68,9 +68,8 @@ class AuthServiceProvider extends ServiceProvider
             return false;
         });
         Gate::define('showTeamChannel', function ($user) use ($global) {
-            // For who?
             $user = $global->currentUser;
-            if ($user->hasPermissionTo(User::ABILITIES[2])) {
+            if ($user->hasPermissionTo(User::ABILITIES[1])) {
                 return true;
             }
             return false;
@@ -81,6 +80,11 @@ class AuthServiceProvider extends ServiceProvider
                 return true;
             }
             return false;
+        });
+
+        // storeChannel
+        Gate::define('storeChannel', function ($user) use ($global) {
+            
         });
     }
 }
