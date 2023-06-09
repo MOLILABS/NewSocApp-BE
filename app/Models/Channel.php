@@ -44,7 +44,7 @@ class Channel extends BaseModel
     }
 
     /**
-     * @throws GuzzleException|InvalidSelectorException
+     * @throws GuzzleException
      */
     public function getYoutubeInfo(string $id)
     {
@@ -88,7 +88,6 @@ class Channel extends BaseModel
     }
 
     /**
-     * @throws InvalidSelectorException
      * @throws GuzzleException
      */
     public function getFacebookInfo(string $id)
@@ -112,7 +111,6 @@ class Channel extends BaseModel
     }
 
     /**
-     * @throws InvalidSelectorException
      * @throws GuzzleException
      */
     public function getWebsiteInfo(string $url)
@@ -141,7 +139,6 @@ class Channel extends BaseModel
 
     /**
      * @throws GuzzleException
-     * @throws InvalidSelectorException
      */
     protected function getAdditionalStoreFields(Request $request): array
     {
@@ -201,6 +198,28 @@ class Channel extends BaseModel
     public function channelGroup(): hasMany
     {
         return $this->hasMany(ChannelGroup::class);
+    }
+
+    /**
+     * @param $model
+     * @param $request
+     * @return mixed
+     */
+    function filterByRelation($model, $request)
+    {
+        $category_id = $request->get('category_id');
+        if ($category_id){
+            $model->whereHas('categoryChannel', function ($query) use ($category_id) {
+                $query->where('category_id', $category_id);
+            });
+        }
+        $group_id = $request->get('group_id');
+        if ($group_id){
+            $model->whereHas('channelGroup', function ($query) use ($group_id) {
+                $query->where('group_id', $group_id);
+            });
+        }
+        return $model;
     }
 
 }

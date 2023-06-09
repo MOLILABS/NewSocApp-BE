@@ -258,7 +258,7 @@ class BaseModel extends Model
     /**
      * @return array
      */
-    protected function getHiddenField()
+    protected function getHiddenField(): array
     {
         return [
             Constant::CREATED_BY,

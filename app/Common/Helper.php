@@ -38,4 +38,12 @@ class Helper
             return self::getResponse(null);
         }
     }
+
+    /**
+     * @return string
+     */
+    public static function generateRandomColor(): string
+    {
+        return '#' . substr(str_shuffle('ABCDEF0123456789'), 0, 6);
+    }
 }

@@ -7,6 +7,7 @@ use App\Http\Controllers\ChannelController;
 use App\Http\Controllers\ChannelGroupController;
 use App\Http\Controllers\ChannelUserController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\ModelRoleController;
 use App\Http\Controllers\PlatformController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\TeamUserController;
@@ -49,6 +50,11 @@ Route::middleware(['auth:sanctum', AuthStore::class])->group(function () {
     Route::delete('channel-group', [ChannelGroupController::class, 'deleteByForeignKey']);
     Route::resource('channel-user', ChannelUserController::class);
     Route::resource('team-user', TeamUserController::class);
+    Route::resource('model-roles', ModelRoleController::class,[
+        'except' => ['delete']]);
+    Route::delete('model-roles', [ChannelGroupController::class, 'deleteByForeignKey']);
+    Route::resource('users', UserController::class,[
+        'except' => ['update', 'delete']]);
     Route::post('permission/assign', [PermissionController::class, 'assignPermissionToRole']);
     Route::post('role/assign', [RoleController::class, 'assignRoleToUser']);
     Route::put('users/{id}/salary', [UserController::class, 'updateSalary']);
