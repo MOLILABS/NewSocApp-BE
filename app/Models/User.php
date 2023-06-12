@@ -77,16 +77,37 @@ class User extends Authenticatable
         "showAllChannel",
         "showTeamChannel",
         "showUnassignedChannel",
+
+        "storeChannel",
+
         "assignChannelToTeamUser",
         "assignChannelToAllUser",
+
         "updateAssignedChannel",
         "updateTeamChannel",
         "updateAllChannel",
+
         "destroyAssignedChannel",
         "destroyTeamChannel",
         "destroyAllChannel",
+
+        "storeGroup",
+        "updateGroup",
+        "destroyGroup",
+
+        "storeCategory",
+        "updateCategory",
+        "destroyCategory",
+
+        "storeTeam",
+        "updateTeam",
+        "destroyTeam",
+
         "assignUserToTeam",
         "assignUserToAllTeam",
+        
+        "removeUserFromCurrentTeam",
+        "removeUserFromAllTeam"
     ];
 
     const ROLES = [
