@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Pagination\Paginator;
+use Spatie\Permission\Models\Permission;
 
 class Channel extends BaseModel
 {
@@ -184,10 +185,11 @@ class Channel extends BaseModel
         $model = parent::queryWithCustomFormat($request);
         $global = app(GlobalVariable::class);
         $user = $global->currentUser;
-
-        if (Gate::allows('showAllChannel')) {
+        $abilities = User::ABILITIES;
+        
+        if (Gate::allows($abilities[0])) {
             return $model;
-        } else if (Gate::allows('showTeamChannel')) {
+        } else if (Gate::allows($abilities[1])) {
             // Get user's teams
             $teamIDs = DB::table(TeamUser::retrieveTableName())
                 ->where('user_id', '=', $user->id)
@@ -216,7 +218,7 @@ class Channel extends BaseModel
             $channelsId = $channels->merge($unassignedChannels)->unique();
 
             return $model->whereIn('id', $channelsId)->toQuery()->paginate(BaseModel::CUSTOM_LIMIT);
-        } else if (Gate::allows('showUnassignedChannel')) {
+        } else if (Gate::allows($abilities[2])) {
             $channelIds = DB::table(ChannelUser::retrieveTableName())
                 ->where('is_responsible', '=', 0)
                 ->pluck('channel_id');

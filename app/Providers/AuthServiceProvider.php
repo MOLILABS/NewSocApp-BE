@@ -59,32 +59,14 @@ class AuthServiceProvider extends ServiceProvider
             return false;
         });
 
-        // showChannel
-        Gate::define('showAllChannel', function ($user) use ($global) {
-            $user = $global->currentUser;
-            if ($user->hasPermissionTo(User::ABILITIES[0])) {
-                return true;
-            }
-            return false;
-        });
-        Gate::define('showTeamChannel', function ($user) use ($global) {
-            $user = $global->currentUser;
-            if ($user->hasPermissionTo(User::ABILITIES[1])) {
-                return true;
-            }
-            return false;
-        });
-        Gate::define('showUnassignedChannel', function ($user) use ($global) {
-            $user = $global->currentUser;
-            if ($user->hasPermissionTo(User::ABILITIES[3])) {
-                return true;
-            }
-            return false;
-        });
-
-        // storeChannel
-        Gate::define('storeChannel', function ($user) use ($global) {
-            
-        });
+        foreach (User::ABILITIES as $ability) {
+            Gate::define($ability, function ($user) use ($global, $ability) {
+                $user = $global->currentUser;
+                if ($user->hasPermissionTo($ability)) {
+                    return true;
+                }
+                return false;
+            });
+        };
     }
 }
