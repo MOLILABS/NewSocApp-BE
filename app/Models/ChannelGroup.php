@@ -62,12 +62,11 @@ class ChannelGroup extends BaseModel
         $model = parent::updateWithCustomFormat($request, $id);
         $global = app(GlobalVariable::class);
         $user = $global->currentUser;
-        $abilities = User::ABILITIES;
         $channel_id = $request->get('channel_id');
 
-        if (Gate::allows($abilities[9])) {
+        if (Gate::allows('updateAllChannel')) {
             return $model;
-        } else if (Gate::allows($abilities[8])) {
+        } else if (Gate::allows('updateTeamChannel')) {
             // Get user's teams
             $teamIDs = DB::table(TeamUser::retrieveTableName())
                 ->where('user_id', '=', $user->id)
@@ -91,7 +90,7 @@ class ChannelGroup extends BaseModel
             }
             
             return null;
-        } else if (Gate::allows($abilities[7])) {
+        } else if (Gate::allows('updateAssignedChannel')) {
             // Check if the user have the channel
             $isExist = DB::table(ChannelUser::retrieveTableName())
                 ->where('channel_id', '=', $channel_id)

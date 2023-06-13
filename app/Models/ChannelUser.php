@@ -60,12 +60,11 @@ class ChannelUser extends BaseModel
     {
         $global = app(GlobalVariable::class);
         $user = $global->currentUser;
-        $abilities = User::ABILITIES;
         $assignedUserId = $request->get('user_id');
 
-        if (Gate::allows($abilities[4])) {
+        if (Gate::allows('assignChannelToAllUser')) {
             return parent::storeWithCustomFormat($request);
-        } else if (Gate::allows($abilities[3])) {
+        } else if (Gate::allows('assignChannelToTeamUser')) {
             // Get current user team ids
             $teamIds = DB::table(TeamUser::retrieveTableName())
                 ->where('user_id', '=', $user->id)

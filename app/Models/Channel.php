@@ -221,11 +221,10 @@ class Channel extends BaseModel
         $model = parent::queryWithCustomFormat($request);
         $global = app(GlobalVariable::class);
         $user = $global->currentUser;
-        $abilities = User::ABILITIES;
         
-        if (Gate::allows($abilities[0])) {
+        if (Gate::allows('showAllChannel')) {
             return $model;
-        } else if (Gate::allows($abilities[1])) {
+        } else if (Gate::allows('showTeamChannel')) {
             // Get user's teams
             $teamIDs = DB::table(TeamUser::retrieveTableName())
                 ->where('user_id', '=', $user->id)
@@ -254,7 +253,7 @@ class Channel extends BaseModel
             $channelsId = $channels->merge($unassignedChannels)->unique();
 
             return $model->whereIn('id', $channelsId)->toQuery()->paginate(BaseModel::CUSTOM_LIMIT);
-        } else if (Gate::allows($abilities[2])) {
+        } else if (Gate::allows('showUnassignedChannel')) {
             $channelIds = DB::table(ChannelUser::retrieveTableName())
                 ->where('is_responsible', '=', 0)
                 ->pluck('channel_id');
