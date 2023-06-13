@@ -52,6 +52,24 @@ class Group extends BaseModel
         );
     }
 
+    public function storeWithCustomFormat(Request $request)
+    {
+        if(Gate::allows('storeGroup'))
+        {
+            return parent::storeWithCustomFormat($request);
+        }
+        return null;
+    }
+
+    public function updateWithCustomFormat(Request $request, $id): ?Model
+    {
+        if(Gate::allows('updateGroup'))
+        {
+            return parent::updateWithCustomFormat($request, $id);
+        }
+        return null;
+    }
+
     public function destroyWithCustomFormat($id): bool
     {
         if(Gate::allows('destroyGroup'))

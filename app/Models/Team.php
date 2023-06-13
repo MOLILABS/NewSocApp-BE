@@ -52,6 +52,24 @@ class Team extends BaseModel
         );
     }
 
+    public function storeWithCustomFormat(Request $request)
+    {
+        if(Gate::allows('storeTeam'))
+        {
+            return parent::storeWithCustomFormat($request);
+        }
+        return null;
+    }
+
+    public function updateWithCustomFormat(Request $request, $id): ?Model
+    {
+        if(Gate::allows('updateTeam'))
+        {
+            return parent::updateWithCustomFormat($request, $id);
+        }
+        return null;
+    }
+
     public function destroyWithCustomFormat($id): bool
     {
         if(Gate::allows('destroyTeam'))

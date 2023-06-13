@@ -75,4 +75,23 @@ class TeamUser extends BaseModel
 
         return null;
     }
+
+    public function destroyWithCustomFormat($id): bool
+    {
+        if(Gate::allows('removeUserFromCurrentTeam') || Gate::allows('removeUserFromAllTeam'))
+        {
+            $userId = DB::table(TeamUser::retrieveTableName())
+                ->where('id', '=', $id)
+                ->get('user_id');
+
+            $user = User::find($userId[0]->user_id);
+            
+            $user->removeRole('creator');
+            $user->assignRole('guest');
+
+            return parent::destroyWithCustomFormat($id);
+        }
+        
+        return false;
+    }
 }
