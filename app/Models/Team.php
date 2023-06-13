@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Team extends BaseModel
 {
@@ -48,5 +50,25 @@ class Team extends BaseModel
             ],
             parent::getUpdateValidator($request, $id)
         );
+    }
+
+    public function destroyWithCustomFormat($id): bool
+    {
+        if(Gate::allows('destroyTeam'))
+        {
+            // Check if team still have member and still active
+            $isExist = DB::table(TeamUser::retrieveTableName())
+                ->where('team_id', '=', $id)
+                ->where('is_active', '=', 1)
+                ->exists();
+
+            if($isExist)
+            {
+                return false;
+            }
+            return parent::destroyWithCustomFormat($id);
+        }
+
+        return false;
     }
 }

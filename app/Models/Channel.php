@@ -180,6 +180,42 @@ class Channel extends BaseModel
         );
     }
 
+    public function storeWithCustomFormat(Request $request)
+    {
+        $channel_id = $request->get('channel_id');
+
+        if(Gate::allows('storeChannel'))
+        {
+            // Check if channel already exist
+            $isExist = DB::table(Channel::retrieveTableName())
+                ->where('id', '=', $channel_id)
+                ->exists();
+
+            // Get all user have the channel
+            $userIds = DB::table(ChannelUser::retrieveTableName())
+                ->where('channel_id', '=', $channel_id)
+                ->pluck('user_id');
+
+            // Get team ids
+            $teamIds = DB::table(TeamUser::retrieveTableName())
+                ->whereIn('user_id', $userIds)
+                ->pluck('team_id')->unique();
+
+            // Get team name
+            $teamsName = DB::table(Team::retrieveTableName())
+                ->whereIn('id',$teamIds)
+                ->pluck('name');
+
+            if($isExist)
+            {
+                return Helper::getResponse('',"Channel already belong to team " . $teamsName->implodde(', '));
+            }
+            return parent::storeWithCustomFormat($request);
+        }
+
+        return null;
+    }
+
     public function queryWithCustomFormat(Request $request)
     {
         $model = parent::queryWithCustomFormat($request);
