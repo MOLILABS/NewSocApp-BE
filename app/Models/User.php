@@ -74,13 +74,40 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
     const ABILITIES = [
-        "admin",
-        "creator",
-        "leader",
-        "insight",
-        "hr",
-        "finance",
-        "user-manage"
+        "showAllChannel",
+        "showTeamChannel",
+        "showUnassignedChannel",
+
+        "storeChannel",
+
+        "assignChannelToTeamUser",
+        "assignChannelToAllUser",
+
+        "updateAssignedChannel",
+        "updateTeamChannel",
+        "updateAllChannel",
+
+        "destroyAssignedChannel",
+        "destroyTeamChannel",
+        "destroyAllChannel",
+
+        "storeGroup",
+        "updateGroup",
+        "destroyGroup",
+
+        "storeCategory",
+        "updateCategory",
+        "destroyCategory",
+
+        "storeTeam",
+        "updateTeam",
+        "destroyTeam",
+
+        "assignUserToTeam",
+        "assignUserToAllTeam",
+        
+        "removeUserFromCurrentTeam",
+        "removeUserFromAllTeam"
     ];
 
     const ROLES = [
@@ -89,7 +116,8 @@ class User extends Authenticatable
         "accountant" => [],
         "hr" => [],
         "finance" => [],
-        "guest" => []
+        "guest" => [],
+        "creator" => [],
     ];
 
     /**

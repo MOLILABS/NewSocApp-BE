@@ -30,7 +30,7 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-        
+
         $global = app(GlobalVariable::class);
         Gate::define('assignRoleToUser', function ($user) use ($global) {
             $user = $global->currentUser;
@@ -58,5 +58,15 @@ class AuthServiceProvider extends ServiceProvider
             }
             return false;
         });
+
+        foreach (User::ABILITIES as $ability) {
+            Gate::define($ability, function ($user) use ($global, $ability) {
+                $user = $global->currentUser;
+                if ($user->hasPermissionTo($ability)) {
+                    return true;
+                }
+                return false;
+            });
+        };
     }
 }
