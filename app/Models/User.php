@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Common\Constant;
 use App\Common\GlobalVariable;
 use App\Common\Helper;
 use Exception;
@@ -62,8 +63,20 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
-        'otp'
+        'otp',
+        'confirm_email',
+        'last_sent',
+        'salary',
+        'created_at',
+        'created_by',
+        'updated_at',
+        'updated_by',
+        'is_active',
+        'role'
     ];
+
+    protected $filters = [];
+    protected $groupBy = [];
 
     /**
      * The attributes that should be cast.
@@ -233,10 +246,54 @@ class User extends Authenticatable
     }
 
     /**
-     * @return string
+     * @param Request $request
+     * @return array
      */
-    public static function generateRandomColor(): string
+    public function queryWithCustomFormat(Request $request): array
     {
-        return '#' . substr(str_shuffle('ABCDEF0123456789'), 0, 6);
+        $limit = $request->get('limit');
+        $request = $request->only($this->filters);
+        $model = with(new static)::select();
+        $model = $model->where(Constant::IS_ACTIVE, 1);
+        $result = $model
+            ->paginate($limit ?: BaseModel::CUSTOM_LIMIT)
+            ->appends($request);
+        $result = $result->map(function($item){
+            if(!isset($item->roles)) {
+                return $item;
+            }
+            return $item;
+        });
+        return ['data' => $result, 'total' => $result->count()];
     }
+
+    /**
+     * @param $model
+     * @param $request
+     * @return mixed
+     */
+    function filterByRelation($model, $request)
+    {
+        $role_id = $request->get('role_id');
+        if ($role_id){
+            $model->whereHas('userRole', function ($query) use ($role_id) {
+                $query->where('role_id', $role_id);
+            });
+        }
+        return $model;
+    }
+
+    /**
+     * @return array
+     */
+    static function getQueryValidator(): array
+    {
+        return [
+            'limit' => [
+                'numeric',
+                'gte:0'
+            ]
+        ];
+    }
+
 }

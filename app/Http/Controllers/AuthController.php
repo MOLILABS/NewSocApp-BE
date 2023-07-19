@@ -150,7 +150,7 @@ class AuthController extends Controller
                 'email' => $request['email'],
                 'password' => Hash::make($request['password']),
                 'last_sent' => new DateTime(),
-                'avatar' => User::generateRandomColor(),
+                'avatar' => Helper::generateRandomColor(),
             ]);
 
             $newUserId = DB::table(User::TABLE_NAME)->where('email', '=', $request['email'])->get('id');

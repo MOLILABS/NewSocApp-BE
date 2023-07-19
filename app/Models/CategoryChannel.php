@@ -2,6 +2,18 @@
 
 namespace App\Models;
 
+use App\Common\GlobalVariable;
+use App\Common\Helper;
+use Exception;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use App\Common\Helper;
 use Illuminate\Http\Request;
 use App\Common\GlobalVariable;
@@ -14,6 +26,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class CategoryChannel extends BaseModel
 {
     use HasFactory;
+
+    protected $softDelete = false;
 
     protected $table = 'category_channel';
 
@@ -173,5 +187,40 @@ class CategoryChannel extends BaseModel
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    /**
+     * @param Request $request
+     * @return Application|ResponseFactory|Response
+     */
+    public function deleteByForeignKey(Request $request)
+    {
+        $validation = $request->all();
+        $validator = Validator::make(
+            $validation,
+            [
+                'channel_id' => [
+                    'int',
+                    'required',
+                ],
+                'category_id' => [
+                    'int',
+                    'required',
+                ],
+            ]
+        );
+        if ($validator->fails()) {
+            return Helper::getResponse(null, $validator->errors());
+        }
+        try {
+            $categoryChannel = DB::table(CategoryChannel::retrieveTableName())
+                ->where('channel_id', '=', $request->get('channel_id'))
+                ->where('category_id', '=', $request->get('category_id'))
+                ->first();
+            DB::table(CategoryChannel::retrieveTableName())->delete($categoryChannel->id);
+            return Helper::getResponse(true);
+        } catch (Exception $ex) {
+            return Helper::handleApiError($ex);
+        }
     }
 }

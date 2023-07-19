@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Common\Helper;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\AbsenceType;
@@ -26,7 +27,7 @@ class UserSeeder extends Seeder
                 'password' => Hash::make(env('ADMIN_PASSWORD')),
                 'remember_token' => null,
                 'confirm_email' => 1,
-                'avatar' => User::generateRandomColor(),
+                'avatar' => Helper::generateRandomColor(),
                 'role' => array_keys(User::ROLES)[0]
             ]);
 

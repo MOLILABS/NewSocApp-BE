@@ -3,14 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Common\Helper;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Http\Response;
 
 class UserController extends Controller
 {
     public $model = User::class;
 
+    /**
+     * @param Request $request
+     * @param $id
+     * @return Application|ResponseFactory|Response
+     */
     public function updateSalary(Request $request, $id)
     {
         /** @var User $modelObj */
@@ -18,6 +24,10 @@ class UserController extends Controller
         return $modelObj->updateSalary($request, $id);
     }
 
+    /**
+     * @param Request $request
+     * @return mixed
+     */
     public function updateUser(Request $request)
     {
         $modelObj = $this->modelObj;

@@ -99,4 +99,14 @@ class Role extends BaseModel
             return Helper::getResponse('');
         }
     }
+
+    protected function getHiddenField(): array
+    {
+        return array_merge(
+            [
+                'guard_name'
+            ],
+            parent::getHiddenField()
+        );
+    }
 }
