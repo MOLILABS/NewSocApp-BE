@@ -9,6 +9,11 @@ class Platform extends BaseModel
 {
     use HasFactory;
 
+    const PLATFORMS = [
+        'Facebook',
+        'Tiktok',
+        'Youtube',
+    ];
     protected $fillable = [
         'name',
         'description',
@@ -42,5 +47,4 @@ class Platform extends BaseModel
             'logo' => 'logo'
         ],
     ];
-
 }

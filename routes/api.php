@@ -16,9 +16,13 @@ use App\Http\Controllers\AbsenceRequestController;
 use App\Http\Middleware\AuthStore;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FacebookDetailController;
+use App\Http\Controllers\GrowthController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\TikTokDetailController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\YouTubeDetailController;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,4 +66,8 @@ Route::middleware(['auth:sanctum', AuthStore::class])->group(function () {
     Route::resource('absence-types', AbsenceController::class);
     Route::resource('absence-request', AbsenceRequestController::class);
     Route::post('absence-request/answer', [AbsenceRequestController::class, 'answerRequest']);
+
+    Route::resource('channel/facebook/growth', FacebookDetailController::class);
+    Route::resource('channel/youtube/growth', YouTubeDetailController::class);
+    Route::resource('channel/tiktok/growth', TikTokDetailController::class);
 });
